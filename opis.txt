@@ -1,0 +1,51 @@
+|===========================================================|
+|                          PODSTAWY                         |
+|===========================================================|
+
+|===========|
+|Główna idea|
+|===========|
+
+Chce apkę, która będzie zbierac informacje o nowych filmach wybranych jutuberow i przedstawiac je w przystepny sposob, żeby użytkownik mógł wybrac filmy warte uwagi i zostawic je w liście. Potem mógłby tylko wyświetlić listę i wybrać dany film(moze klik na link?)
+
+Chce miec mozliwosc nadania tagow (rozrywka, nauka, muzyka,...) autorom i konkretnym filmom
+
+Chce wygodnie edytować szczegoly filmu: status, tag, etc
+
+Chce miec mozliwosc wylistowania:
+* najnowszych filmow wszystkich autorów
+* najnowszych filmow wybranego autora
+* filmow, ktorych nie skonczylem ogladac
+* filmow, ktore nie sa przeze mnie sklasyfikowane/przegladniete
+
+A co wy chcecie? :D
+
+/Ania/ nie skonczylam ogladac roznych filmow, ale ze mam 250 filmow w "do obejrzenia", to mozna sie latwo pogubic i zapomniec. Powinnam moc nadawac priorytet filmom; wiadomo, ze jeden content mnie bardziej interesuje niz inny. Ale nie w skali 1-5, tylko "szybko" i "poczeka".
+
+/Oles's ideas/ Sortowanie listy, tworzenie wlasnych list
+
+|==================|
+|Podstawowe funkcje|
+|==================|
+
+1. [Wczytaj autorów] 	Uzytkownik podaje autorow
+2. [Refresh] 			Komenda odswiezamy czyli pobieramy nowe filmy
+3. [Listuj]				Komenda listujemy i mozemy edytowac kazdy elem listy
+# listowan jest kilka
+
+
+
+|===========================================================|
+|                SZCZEGÓŁOWE OPISOWE NOTATKI                |
+|===========================================================|
+
+|==================|
+|Jak pobierac filmy|
+|==================|
+
+Do kazdego autora dopisuje date startu, ktora stanowi poczatek interesujacych nas filmow
+
+Pobieramy wszystkie filmy danego autora, ktore zostaly opublikowane po dacie startu
+
+Swiezo pobrane filmy sa oznaczone jako nowe do przegladniecia przez uzytkownika
+
