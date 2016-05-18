@@ -10,7 +10,8 @@ Please DONT put in this file any text, unless you really want to then please wri
 
 U ; Krzysztof Gonciarz ; wybuchajacebeczki
 U ; dmbrandon! ; dmbrandon
-U ; SMITE by Hi-Rez Studios ; smitegame
 U ; Paul Joseph Watson ; PrisonPlanetLive
-C ; Autostopem Na Koniec Świata ; UCcnATEeoZj__3e7JvdNWIpA
 C ; SMITEPro ; UCDBofwsppusJeitUyKpkB5
+U ; SMITE by Hi-Rez Studios ; smitegame
+U ; Alt Shift X ; JaiWbio
+C ; Autostopem Na Koniec Świata ; UCcnATEeoZj__3e7JvdNWIpA

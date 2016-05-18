@@ -21,27 +21,35 @@ class editYoutubers:
             i += 1
 
     def Edit(self):
-        self.Show()
-        world = input( "\nEnter (+) in order to add new author\n"
-               "Enter number to edit existing author\n"
-               "Enter anything else to exit\n")
+        goon = True
+        while goon:
+            self.Show()
+            world = input( "\nEnter (+) in order to add new author\n"
+                   "Enter number to DELETE existing author\n"
+                   "Enter anything else to exit\n")
 
-        if '+' in world:
-            os.system("clear")
-            idorchannel = input("Type:\n"
-                                "U if You want to enter author by his username\n"
-                                "C if You want to enter author by his channel ID\n")
-            if idorchannel.casefold().startswith('u'):
-                idorchannel = input("Enter username: ")
-                name = self.__getChannelName(('U',idorchannel))
-                self.Authors.append(('U',name,idorchannel))
-            elif idorchannel.casefold().startswith('c'):
-                idorchannel = input("Enter channel ID: ")
-                name = self.__getChannelName(('C',idorchannel))
-                self.Authors.append(('C',name,idorchannel))
-        elif world.isdecimal():
-            print("zaraz bedzie")
+            if '+' in world:
+                os.system("clear")
+                idorchannel = input("Type:\n"
+                                    "U if You want to enter author by his username\n"
+                                    "C if You want to enter author by his channel ID\n")
+                if idorchannel.casefold().startswith('u'):
+                    idorchannel = input("Enter username: ")
+                    name = self.__getChannelName(('U',idorchannel))
+                    self.Authors.append(('U',name,idorchannel))
+                    self.__appendToFile( "{} ; {} ; {}\n".format('U',name,idorchannel) )
+                elif idorchannel.casefold().startswith('c'):
+                    idorchannel = input("Enter channel ID: ")
+                    name = self.__getChannelName(('C',idorchannel))
+                    self.Authors.append(('C',name,idorchannel))
+                    self.__appendToFile( "{} ; {} ; {}\n".format('C',name,idorchannel) )
 
+            elif world.isdecimal():
+                if input("Are You sure? Continue deleting by typing 'yes'").casefold() == 'yes':
+                    self.Authors.pop(int(world))
+                    self.__writeToFile()
+            else:
+                goon = False
 
     # can raise NameError or other http err
     # Tuple = (uOrC, userOrChannelID)
@@ -95,25 +103,29 @@ class editYoutubers:
             line = file.readline()
         file.close()
 
-    def __writeToFile(self):
-        file = open(self.__path, 'w')
-
-        for x in self.Comments:
-            file.write(x)
-
-        for (Type, ChannelName, ID) in self.Authors:
-            file.write( "{} ; {} ; {}\n".format(Type,ChannelName,ID) )
-
-        file.close()
-
-    def test(self):
+    def __appendToFile(self, string):
         try:
-            self.__readFile()
-            self.__writeToFile()
-            for elem in self.Authors:
-                print(elem[0], ' ',elem[1], ' ',elem[2] )
-        except NameError as e:
-            print(e.args)
+            file = open(self.__path, "a")
+            file.write(string)
+            file.close()
+        except Exception as e:
+            print(e)
+            raise NameError("open-file error")
+
+    def __writeToFile(self):
+        try:
+            file = open(self.__path, 'w')
+
+            for x in self.Comments:
+                file.write(x)
+
+            for (Type, ChannelName, ID) in self.Authors:
+                file.write( "{} ; {} ; {}\n".format(Type,ChannelName,ID) )
+
+            file.close()
+        except Exception as e:
+            print(e)
+            raise NameError("open-file error")
 
 ey = editYoutubers()
 ey.Edit()
