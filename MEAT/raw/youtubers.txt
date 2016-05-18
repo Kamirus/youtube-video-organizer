@@ -1,0 +1,16 @@
+Format pliku youtubers: 
+każdy czytany wers zaczyna się od 'U ;' albo 'C ;'
+<jeden><sep><dwa><sep><trzy>
+	gdzie: 	<jeden> <- {U,C}
+			<dwa> to NazwaKanału
+			<trzy> to channelId albo username 
+			<sep> to ' ; ' spacje ważne
+
+Please DONT put in this file any text, unless you really want to then please write that before the list of youtubers
+
+U ; Krzysztof Gonciarz ; wybuchajacebeczki
+U ; dmbrandon! ; dmbrandon
+U ; SMITE by Hi-Rez Studios ; smitegame
+U ; Paul Joseph Watson ; PrisonPlanetLive
+C ; Autostopem Na Koniec Świata ; UCcnATEeoZj__3e7JvdNWIpA
+C ; SMITEPro ; UCDBofwsppusJeitUyKpkB5

@@ -8,7 +8,7 @@
 
 Chce apkę, która będzie zbierac informacje o nowych filmach wybranych jutuberow i przedstawiac je w przystepny sposob, żeby użytkownik mógł wybrac filmy warte uwagi i zostawic je w liście. Potem mógłby tylko wyświetlić listę i wybrać dany film(moze klik na link?)
 
-Chce miec mozliwosc nadania tagow (rozrywka, nauka, muzyka,...) autorom i konkretnym filmom
+Chce miec mozliwosc nadania tagow (rozrywka, nauka, muzyka,...) autorom i konkretnym filmom (pobieranie tagów opisujących playlisty if possible)
 
 Chce wygodnie edytować szczegoly filmu: status, tag, etc
 
@@ -38,6 +38,44 @@ A co wy chcecie? :D
 |===========================================================|
 |                SZCZEGÓŁOWE OPISOWE NOTATKI                |
 |===========================================================|
+
+|=============|
+|System plików|
+|=============|
+
+DIR raw:
+	youtubers.txt
+		Zawartość:
+		każda czytana linia zaczyna się od 'U ; ' od user
+		albo
+		każda czytana linia zaczyna się od 'C ; ' od channel id
+		dalej: <nazwa kanału> ; <username>
+		U/C ; <channel name> ; <username / channelId>
+	DIR youtubers:
+		yvoA_<username>.txt
+			Zawartość: 
+			każda czytana linia zaczyna sie od '_'
+			dalej: SHOW;TITLE;AUTHOR;TAGS;LINK
+
+
+|===========================|
+|Obsługa pliku youtubers.txt|
+|===========================|
+
+1. Otwórz plik 
+2. Czytaj linię i jeśli zaczyna się od 'U ;' albo 'C ;' to podziel sep: ' ; '
+3. Jeśli tab[1] jest puste to pobierz nazwę kanału i tam to wstaw
+4. stwórz z tego krotkę i dodaj ją do listy głownej
+5. Jesli jest następna linia to (2)
+6. Mamy cały plik poczytany i mamy listę rekordów
+
+7a. Wypisujemy autorów razem z numerkami 
+
+7.1b. użytkownik wprowadza wzorzec wyszukiwania
+7.2b. Wypisujemy tych autorów, którzy zgadzają się ze wzorcem wyszukiwania, razem z numerkami 
+
+8. ...
+
 
 |==================|
 |Jak pobierac filmy|
