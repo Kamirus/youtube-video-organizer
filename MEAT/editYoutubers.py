@@ -1,6 +1,7 @@
 from apiclient.discovery import build
 from apiclient.errors import HttpError
 from oauth2client.tools import argparser
+import json
 import os
 
 class editYoutubers:
@@ -11,45 +12,61 @@ class editYoutubers:
         self.__path = path
 
     def Show(self):
-        if self.Authors == []:
-            self.__readFile()
-        os.system("clear")
-        i=0
-        print("YouTube-Video-Organizer\nChosen ones:\nNr \tChannel Name",end="")
-        for (_,ChannelName,_) in self.Authors:
-            print( "\n{}\t{}".format(i,ChannelName), end="")
-            i += 1
+        file = open(self.__path,'r')
+        print(json.dumps( json.load(file),indent=4 ))
+        file.close()
 
-    def Edit(self):
-        goon = True
-        while goon:
-            self.Show()
-            world = input( "\nEnter (+) in order to add new author\n"
-                   "Enter number to DELETE existing author\n"
-                   "Enter anything else to exit\n")
+    # idType = "username" | "channelId"
+    def AddYouTuber(self, id, idType, publishedAfter="1970-01-01"):
+        try:
+            # Load database
+            file = open(self.__path,'r')
+            source = json.load(file)
+            file.close()
 
-            if '+' in world:
-                os.system("clear")
-                idorchannel = input("Type:\n"
-                                    "U if You want to enter author by his username\n"
-                                    "C if You want to enter author by his channel ID\n")
-                if idorchannel.casefold().startswith('u'):
-                    idorchannel = input("Enter username: ")
-                    name = self.__getChannelName(('U',idorchannel))
-                    self.Authors.append(('U',name,idorchannel))
-                    self.__appendToFile( "{} ; {} ; {}\n".format('U',name,idorchannel) )
-                elif idorchannel.casefold().startswith('c'):
-                    idorchannel = input("Enter channel ID: ")
-                    name = self.__getChannelName(('C',idorchannel))
-                    self.Authors.append(('C',name,idorchannel))
-                    self.__appendToFile( "{} ; {} ; {}\n".format('C',name,idorchannel) )
+            try: # check if already there
+                tmp = source[id]
+                raise NameError("Already something under that id!")
+            except: # Adding...
+                # Add item
+                source[id] = self.__fillMember(id,idType,publishedAfter)
 
-            elif world.isdecimal():
-                if input("Are You sure? Continue deleting by typing 'yes'").casefold() == 'yes':
-                    self.Authors.pop(int(world))
-                    self.__writeToFile()
-            else:
-                goon = False
+                # Save changed database to temporary file
+                file = open(self.__path+".tmp",'w')
+                json.dump(source,file, indent=4)
+                file.close()
+
+                # Now we are safely swaping these files and removing source
+                os.rename(self.__path,self.__path+".remove")
+                os.rename(self.__path+".tmp", self.__path)
+                os.remove(self.__path+".remove")
+        # File is probably empty, fill it with {} and call method again
+        except ValueError as e:
+            print("ValueError",'\n',e)
+            file = open(self.__path,'w')
+            file.write("{}")
+            file.close()
+            self.AddYouTuber(idType,publishedAfter)
+        # other problem
+        except Exception as e:
+            print("Dunno what err\n",e)
+
+    def AddYouTuberByUsername(self, id, publishedAfter="1970-01-01"):
+        self.AddYouTuber(id, "username",publishedAfter)
+    def AddYouTuberByChannelId(self, id, publishedAfter="1970-01-01"):
+        self.AddYouTuber(id, "channelId",publishedAfter)
+
+    # publishedAfter = "YEAR-MM-DD"
+    def __fillMember(self, id, idType, publishedAfter):
+        return  {
+                    'idType': idType,
+                    'channelName': self.__getChannelName( (idType[0],id) ),
+                    'publishedAfter': self.__getProperDate(publishedAfter)
+                }
+
+    # Date = "1970-01-01"
+    def __getProperDate(self, Date):
+        return Date + "T00:00:00Z"
 
     # can raise NameError or other http err
     # Tuple = (uOrC, userOrChannelID)
@@ -63,7 +80,7 @@ class editYoutubers:
 
 
         (uOrID,userOrChannelID) = Tuple
-        if uOrID == 'U':
+        if uOrID.casefold() == 'u':
             for_username = userOrChannelID
 
             chlist = youtube.channels().list(
@@ -72,7 +89,7 @@ class editYoutubers:
             ).execute()
 
             return chlist.get("items",[])[0]["snippet"]["title"]
-        elif uOrID == 'C':
+        elif uOrID.casefold() == 'c':
             ID = userOrChannelID
 
             chlist = youtube.channels().list(
@@ -84,48 +101,6 @@ class editYoutubers:
         else:
             raise NameError('Wrong TUPLE, First argument can be: U or C')
 
-    def __readFile(self, AllNames=False):
-        try:
-            file = open( self.__path ,'r')
-        except Exception as e:
-            print(e)
-            raise NameError(" NO SUCH FILE ")
-        line = file.readline()
-
-        while line != "":
-            if line[0] == 'U' or line[0] == 'C':
-                tmplist = line.split(' ; ')
-                if tmplist[1] == '' or AllNames:
-                    tmplist[1] = self.__getChannelName( (tmplist[0],tmplist[2]) )
-                self.Authors.append( (tmplist[0], tmplist[1], tmplist[2][: -1]) )
-            else:
-                self.Comments.append(line)
-            line = file.readline()
-        file.close()
-
-    def __appendToFile(self, string):
-        try:
-            file = open(self.__path, "a")
-            file.write(string)
-            file.close()
-        except Exception as e:
-            print(e)
-            raise NameError("open-file error")
-
-    def __writeToFile(self):
-        try:
-            file = open(self.__path, 'w')
-
-            for x in self.Comments:
-                file.write(x)
-
-            for (Type, ChannelName, ID) in self.Authors:
-                file.write( "{} ; {} ; {}\n".format(Type,ChannelName,ID) )
-
-            file.close()
-        except Exception as e:
-            print(e)
-            raise NameError("open-file error")
-
 ey = editYoutubers()
-ey.Edit()
+# ey.Edit()
+ey.AddYouTuberByUsername("dmbrandon","2000-10-01")
