@@ -1,6 +1,6 @@
-|===========================================================|
-|                          PODSTAWY                         |
-|===========================================================|
+|=======================================================|
+|                       PODSTAWY                        |
+|=======================================================|
 
 |===========|
 |Główna idea|
@@ -17,6 +17,7 @@ Chce miec mozliwosc wylistowania:
 * najnowszych filmow wybranego autora
 * filmow, ktorych nie skonczylem ogladac
 * filmow, ktore nie sa przeze mnie sklasyfikowane/przegladniete
+* filmów których czas trwania zawiera się w podanym przedziale
 
 A co wy chcecie? :D
 
@@ -35,9 +36,9 @@ A co wy chcecie? :D
 
 
 
-|===========================================================|
-|                SZCZEGÓŁOWE OPISOWE NOTATKI                |
-|===========================================================|
+|========================================================|
+|               SZCZEGÓŁOWE OPISOWE NOTATKI              |
+|========================================================|
 
 |=============|
 |System plików|

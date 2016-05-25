@@ -1,12 +1,17 @@
 {
     "dmbrandon": {
-        "idType": "username",
         "publishedAfter": "2000-10-01T00:00:00Z",
+        "idType": "username",
         "channelName": "dmbrandon!"
     },
-    "wybuchajacebeczki": {
-        "idType": "username",
+    "scholagladiatoria": {
         "publishedAfter": "1970-01-01T00:00:00Z",
+        "idType": "username",
+        "channelName": "scholagladiatoria"
+    },
+    "wybuchajacebeczki": {
+        "publishedAfter": "1970-01-01T00:00:00Z",
+        "idType": "username",
         "channelName": "Krzysztof Gonciarz"
     }
 }
