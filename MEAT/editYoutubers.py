@@ -59,6 +59,18 @@ class editYoutubers:
     def AddYouTuberByChannelId(self, id, publishedAfter=__date):
         self.AddYouTuber(id, "channelId", publishedAfter)
 
+    def RemoveYoutuber(self,id):
+        # Load database
+        if self.__source == None:
+            self.__loadFile()
+
+        try:
+            del(self.__source[id])
+        except:
+            raise ValueError("Nothing to be removed")
+
+        self.__saveFile()
+
     def __show(self):
         try:
             file = open(self.__path, 'r')
@@ -143,6 +155,7 @@ class editYoutubers:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument("--remove", help="Remove youtuber by giving his id")
     parser.add_argument("-a","--add", help="Add youtuber by giving username (-u) or " \
                                       "channelId (-c), related with -u -c --date" \
                                       " | example: python3 editYoutubers.py --add SomeUserName -u")
@@ -169,5 +182,9 @@ if __name__ == '__main__':
             Obj.AddYouTuber(args.add, by, args.date)
         except Exception as e:
             print(e)
+    elif args.remove != None:
+        Obj = editYoutubers()
+        print("Removing %s" % args.remove)
+        Obj.RemoveYoutuber(args.remove)
     else:
         print("Maybe use some --help? Nothing happened")

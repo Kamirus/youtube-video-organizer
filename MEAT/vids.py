@@ -17,16 +17,11 @@ class Vids:
         self.__youtubersPath = youtubersPath
         self.__loadYoutubersFile()
 
-    def __loadYoutubersFile(self):
-        # Fill youtubers with json file
-        try:
-            file = open(self.__youtubersPath, 'r')
-            self.__youtubers = json.load(file)
-            file.close()
-        except:
-            raise ValueError("[ERROR]\ncannot load file with youtubers")
+    def updateAllYoutubers(self, Quick=False, All=False):
+        for id, _ in self.__youtubers.items():
+            self.updateYoutuber(id,Quick,All)
 
-    def updateYoutuber(self, id, Quick=True):
+    def updateYoutuber(self, id, Quick=False, All=False):
         try:
             oneYoutuber = self.__youtubers[id]
         except:
@@ -48,8 +43,14 @@ class Vids:
                 # load old list of videos
                 vids = self.__loadJson( oneYoutuber['channelName']+'.txt' )
 
-                # search vids
-                JJ = self.__callSearch(oneYoutuber,id,date=vids[0]['date'])
+                # Want to make whole refresh
+                if All:
+                    date = oneYoutuber['publishedAfter']
+                else:
+                    date = vids[0]['date']
+
+                # search
+                JJ = self.__callSearch(oneYoutuber,id,date)
 
                 # merging into vids
                 if Quick:
@@ -79,7 +80,7 @@ class Vids:
     def __initFile(self,outputJson, fileName):
         try:
             file = open(self.__folderPath+ fileName, 'w')
-            json.dump(outputJson, file, indent=4)
+            json.dump(outputJson, file, indent=4,ensure_ascii=False)
             file.close()
         except:
             raise ValueError("[ERROR]\nProblem occured while saving...")
@@ -89,7 +90,7 @@ class Vids:
         try:
             # Save changed database to temporary file
             file = open(self.__folderPath+ fileName + ".tmp", 'w')
-            json.dump(outputJson, file, indent=4)
+            json.dump(outputJson, file, indent=4,ensure_ascii=False)
             file.close()
 
             # Now we are safely swaping these files and removing source
@@ -107,6 +108,15 @@ class Vids:
             return ret
         except:
             raise ValueError("[ERROR]\nProblem occured while loading...")
+
+    def __loadYoutubersFile(self):
+        # Fill youtubers with json file
+        try:
+            file = open(self.__youtubersPath, 'r')
+            self.__youtubers = json.load(file)
+            file.close()
+        except:
+            raise ValueError("[ERROR]\ncannot load file with youtubers")
 
     def __mergeDicts(self, new, old):
         for key,val in new.items():
@@ -131,11 +141,8 @@ class Vids:
     def __preciseMergeAssistant(self,toAdd,vids):
         for k in range(len(vids)):
             if toAdd['link'] == vids[k]['link']:
-                test = self.__mergeDicts(toAdd,vids[k])
-                if test == vids[k]:
-                    print("alepoco")
-                else:
-                    vids[k] = test
+                self.__mergeDicts(toAdd,vids[k])
+
 
 class YTApi:
     # important Constants
@@ -217,23 +224,29 @@ class YTApi:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--clear", help="Clear terminal before printing", action='store_true')
-    parser.add_argument("-t", "--test", help="Test", action='store_true')
-    parser.add_argument("-u", "--update", help="Update videos of GIVEN youtuber, type their id: username or channelName")
+    parser.add_argument("-u", "--update",default=False,nargs='?', help="With no argument: update all youtubers, with given id only update that one youtuber")
+    parser.add_argument("-p", "--precise", help="flag for update to merge precisely, can be little bit longer", action='store_true')
+    parser.add_argument("-a", "--all", help="flag for update to check ALL videos PRECISELY once again", action='store_true')
 
+    # parser.add_argument("-t", "--test", action='store_true')
 
     args = parser.parse_args()
 
     if args.clear: os.system("clear")
 
-    if args.test:
-        yt = YTApi()
-        dd = yt.youtube_search('dmbrandon',"1970-01-01T00:00:00Z",True)
-        file = open('TEST.txt','w')
-        json.dump(dd,file,indent=4)
-        file.close()
-    elif args.update != None:
+    # if args.test:
+    #     print(args.update)
+    #     quit(1)
+
+    if args.update != False:
         tool = Vids()
-        tool.updateYoutuber(args.update)
+        print("Updating...")
+        if args.update == None:
+            tool.updateAllYoutubers(Quick=not args.precise,All=args.all)
+        elif args.precise or args.all:
+            tool.updateYoutuber(args.update,All=args.all)
+        else:
+            tool.updateYoutuber(args.update,Quick=True)
     # elif args.table:
     #     view = View(['channelName', 'publishedAfter'])
     #     view.show(lines=True)

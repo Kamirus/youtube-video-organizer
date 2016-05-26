@@ -1,37 +1,32 @@
 {
-    "MaxTVTUBE": {
-        "idType": "username",
-        "channelName": "MaxTVNews",
-        "publishedAfter": "1970-01-01T00:00:00Z"
-    },
-    "jezykalnia": {
-        "idType": "username",
-        "channelName": "Arlena Witt",
-        "publishedAfter": "1970-01-01T00:00:00Z"
-    },
     "failarmy": {
-        "idType": "username",
         "channelName": "FailArmy",
-        "publishedAfter": "1970-01-01T00:00:00Z"
-    },
-    "dmbrandon": {
-        "idType": "username",
-        "channelName": "dmbrandon!",
-        "publishedAfter": "1970-01-01T00:00:00Z"
-    },
-    "scholagladiatoria": {
-        "idType": "username",
-        "channelName": "scholagladiatoria",
-        "publishedAfter": "1970-01-01T00:00:00Z"
+        "publishedAfter": "1970-01-01T00:00:00Z",
+        "idType": "username"
     },
     "wybuchajacebeczki": {
-        "idType": "username",
         "channelName": "Krzysztof Gonciarz",
-        "publishedAfter": "2016-05-01T00:00:00Z"
+        "publishedAfter": "2016-05-01T00:00:00Z",
+        "idType": "username"
+    },
+    "jezykalnia": {
+        "channelName": "Arlena Witt",
+        "publishedAfter": "1970-01-01T00:00:00Z",
+        "idType": "username"
+    },
+    "MaxTVTUBE": {
+        "channelName": "MaxTVNews",
+        "publishedAfter": "2016-01-01T00:00:00Z",
+        "idType": "username"
+    },
+    "dmbrandon": {
+        "channelName": "dmbrandon!",
+        "publishedAfter": "2016-05-01T00:00:00Z",
+        "idType": "username"
     },
     "UCDBofwsppusJeitUyKpkB5g": {
-        "idType": "channelId",
         "channelName": "SMITEPro",
-        "publishedAfter": "2016-04-01T00:00:00Z"
+        "publishedAfter": "2016-05-01T00:00:00Z",
+        "idType": "channelId"
     }
 }
