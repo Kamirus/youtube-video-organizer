@@ -5,6 +5,7 @@ from apiclient.errors import HttpError
 import argparse
 import json
 import os
+from showYoutubers import View
 
 class Vids:
     # Variables
@@ -28,20 +29,20 @@ class Vids:
             raise ValueError("[ERROR]\nNot found ID in youtubers file!")
 
         # First time!
-        if oneYoutuber['channelName']+'.txt' not in os.listdir(self.__folderPath):
+        if oneYoutuber['channelName'] not in os.listdir(self.__folderPath):
             print("Init file for %s" % oneYoutuber['channelName'])
 
             # search vids
             JJ = self.__callSearch(oneYoutuber,id)
 
             # save to file
-            self.__initFile(JJ,oneYoutuber['channelName']+'.txt')
+            self.__initFile(JJ,oneYoutuber['channelName'])
 
         # Just update
         else:
             try:
                 # load old list of videos
-                vids = self.__loadJson( oneYoutuber['channelName']+'.txt' )
+                vids = self.__loadJson( oneYoutuber['channelName'] )
 
                 # Want to make whole refresh
                 if All:
@@ -60,10 +61,17 @@ class Vids:
                     for toAdd in JJ:
                         self.__preciseMergeAssistant(toAdd,vids)
 
-                self.__saveFile(vids,oneYoutuber['channelName']+'.txt')
+                self.__saveFile(vids,oneYoutuber['channelName'])
 
             except:
                 raise ValueError("[ERROR]\nProblem occured while loading...")
+
+    def removeVids(self, id):
+        if self.__youtubers[id]['channelName'] in os.listdir(self.__folderPath):
+            os.remove(self.__folderPath+self.__youtubers[id]['channelName'])
+            print("Removed %s" % self.__youtubers[id]['channelName'])
+        else:
+            print("Nothing to be removed")
 
     def __callSearch(self,oneYoutuber,id, date=None):
         # Maybe we dont want to update all vids but only check for new ones
@@ -118,6 +126,7 @@ class Vids:
         except:
             raise ValueError("[ERROR]\ncannot load file with youtubers")
 
+    # merge two dictionaries
     def __mergeDicts(self, new, old):
         for key,val in new.items():
             if key != 'tags':
@@ -142,6 +151,51 @@ class Vids:
         for k in range(len(vids)):
             if toAdd['link'] == vids[k]['link']:
                 self.__mergeDicts(toAdd,vids[k])
+
+
+# Extend View from youtubers
+class VidsView(View):
+    class exList(list):
+        def items(self):
+            return ((i, self[i]) for i in range(len(self)) )
+
+    def __init__(self, OrderList, Youtubers, Tags=None, folderPath="raw/youtubers/"):
+        super().__init__(OrderList)
+        self._youtubers = Youtubers # id's of youtubers
+        self._tags = Tags
+        self._folderPath = folderPath
+
+    def show(self, nest=0, lines=False, printMain=False,
+             headingChar='=', path="raw/youtubers.txt"):
+
+        # Take youtuber names from id's
+        self._loadFile(path)
+        ytNames = ( self._youtubers[i]['channelName'] for i in self._youtubers )
+
+        # Number of columns
+        col = os.get_terminal_size().columns
+
+        # Width for one element in a row
+        if printMain:
+            l = (len(self._keylist)+1)
+            space = col // l
+        else:
+            l = len(self._keylist)
+            space = col // l
+
+        # Make a nice heading with key
+        self._heading(space, l,printMain=printMain, char=headingChar)
+
+        for name in ytNames:
+            # load file
+            self._loadFile(self._folderPath+name)
+            self._source = self.exList().extend(self._source)
+
+            # Print main content
+            self._printValues(nest, self._source, space, col,l,
+                           lines=lines,
+                           printMain=printMain)
+
 
 
 class YTApi:
@@ -178,6 +232,7 @@ class YTApi:
 
     # it adds to vids desired search results recursively page by page
     def __onePageYoutubeSearch(self, vids, youtube, id, published_after, pageToken=None):
+        # ask youtube
         search_response = youtube.search().list(
             type="video",
             part="id,snippet",
@@ -190,6 +245,7 @@ class YTApi:
 
         search_videos = []
 
+        # Next page cuz 50 results is not enough
         Next = search_response.get("nextPageToken")
 
         # Merge video ids
@@ -207,7 +263,7 @@ class YTApi:
         for video_result in video_response.get("items", []):
             vids.append({
                 'title': video_result["snippet"]["title"],
-                'duration': video_result['contentDetails']['duration'],
+                'duration': self.reformatISODate(video_result['contentDetails']['duration']),
                 'link': 'www.youtube.com/watch?v='+video_result["id"],
                 'date': video_result['snippet']['publishedAt'],
                 'tags': ['SHOW']
@@ -217,26 +273,55 @@ class YTApi:
         # return vids
         if Next == None or Next == 'None':
             return vids
-        else:
+        else: # next page
             return self.__onePageYoutubeSearch(vids,youtube,id,published_after,pageToken=Next)
+
+    # iso = PT#H#M#S
+    def reformatISODate(self, iso):
+        try:
+            h,m,s = 0,0,0
+            # make it clean #H#M#S
+            iso = iso.split('T')[1]
+
+            # cut hours iso=#M#S
+            if 'H' in iso:
+                tmp = iso.split('H')
+                h = int(tmp[0])
+                iso = tmp[1]
+
+            # cut minutes iso=#S
+            if 'M' in iso:
+                tmp = iso.split('M')
+                m = int(tmp[0])
+                iso = tmp[1]
+
+            s = int(iso[:-1])
+
+            return "{:02}:{:02}:{:02}".format(h,m,s)
+        except:
+            return "ERROR-DATE"
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--clear", help="Clear terminal before printing", action='store_true')
+    parser.add_argument("--remove",help="Remove file with videos by giving id")
     parser.add_argument("-u", "--update",default=False,nargs='?', help="With no argument: update all youtubers, with given id only update that one youtuber")
     parser.add_argument("-p", "--precise", help="flag for update to merge precisely, can be little bit longer", action='store_true')
     parser.add_argument("-a", "--all", help="flag for update to check ALL videos PRECISELY once again", action='store_true')
+    parser.add_argument("-c", "--clear", help="Clear terminal before printing anything", action='store_true')
 
-    # parser.add_argument("-t", "--test", action='store_true')
+    parser.add_argument("-t", "--test", action='store_true')
 
     args = parser.parse_args()
 
     if args.clear: os.system("clear")
 
-    # if args.test:
-    #     print(args.update)
-    #     quit(1)
+
+    if args.test:
+        view = VidsView([])
+        print(view.reformatISODate( input("Duration is ISO: ") ))
+        quit(0)
+
 
     if args.update != False:
         tool = Vids()
@@ -247,9 +332,6 @@ if __name__ == '__main__':
             tool.updateYoutuber(args.update,All=args.all)
         else:
             tool.updateYoutuber(args.update,Quick=True)
-    # elif args.table:
-    #     view = View(['channelName', 'publishedAfter'])
-    #     view.show(lines=True)
-    # else:
-    #     view = View(['channelName', 'publishedAfter'])
-    #     view.show()
+    elif args.remove != None:
+        tool = Vids()
+        tool.removeVids(args.remove)

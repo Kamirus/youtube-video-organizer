@@ -8,51 +8,60 @@ import os
 class View:
     # OrderList is a list with Keys that will be displayed
     def __init__(self, OrderList, path="raw/youtubers.txt"):
-        self.__path = path
-        self.__source = None
-        self.__keylist = OrderList
-
-        # Fill source with json file
-        try:
-            file = open(self.__path, 'r')
-            self.__source = json.load(file)
-            # self.__source = json.loads('%s' % file.read())
-            file.close()
-        except:
-            raise ValueError("[ERROR]\ncannot load file with youtubers")
+        self._path = path
+        self._source = None
+        self._keylist = OrderList
 
     def show(self, nest=0,
-             lines=False, printMain=False, framed=False, headingChar='='):
+             lines=False, printMain=False, headingChar='=', path="raw/youtubers.txt"):
+        # load file
+        self._loadFile(path)
+
         # Number of columns
         col = os.get_terminal_size().columns
 
         # Width for one element in a row
-        space = col // len(self.__keylist)
+        if printMain:
+            l = (len(self._keylist)+1)
+            space = col // l
+        else:
+            l = len(self._keylist)
+            space = col // l
 
         # Make a nice heading with key
-        self.__heading(space, headingChar)
+        self._heading(space, l, printMain=printMain, char=headingChar)
 
         # Print main content
-        self.__printValues(nest, self.__source, space, col,
-                           lines,
-                           printMain,
-                           framed)
+        self._printValues(nest, self._source, space, col,l,
+                           lines=lines,
+                           printMain=printMain)
 
-    def __heading(self, space, char='='):
+    def _loadFile(self,filePath):
+        try:
+            file = open(filePath, 'r')
+            self._source = json.load(file)
+            file.close()
+        except:
+            raise ValueError("[ERROR]\ncannot load file")
+
+    def _heading(self, space, l, printMain, char='='):
         line = '|' + char * (space - 1)
-        l = len(self.__keylist)
 
         # Line
         print(line * l)
 
+        # id
+        if printMain:
+            print('{0:{1}}'.format('|' + 'id', space), end="")
+
         # key
-        for elem in self.__keylist:
+        for elem in self._keylist:
             print('{0:{1}}'.format('|' + elem, space), end="")
 
         # Line
         print(line * l)
 
-    def __printFramedWord(self, Word, width, centered=False, char='='):
+    def _printFramedWord(self, Word, width, centered=False, char='='):
         # |====|
         # |Word|
         # |====|
@@ -67,33 +76,28 @@ class View:
         print(frmt.format(Word, width))
         print(frmt.format(a, width))
 
-    def __printValues(self, nest, dic, space, col, lines=True, printMain=False, framed=False):
-        # nest : if 0 then print row else if printMain then print KEY fi; __printValues(nest-1,...)
+    def _printValues(self, nest, dic, space, col, l, lines=True, printMain=False):
+        # nest : if 0 then print row else if printMain then print KEY fi; _printValues(nest-1,...)
         # dic : dictionary that is json
         # space : width of element in row
         # col : width of row
         # printMain : True will print Keys in the center, False will omit them
         for author, info in dic.items():
             # Key, Main, author
-            if printMain:
-                print('')
-                if framed:
-                    self.__printFramedWord(author, col, char='-')
-                else:
-                    print('id = %s' % author)
-
             if nest == 0:
                 if lines or printMain==False: pipe = '|'
-                else: pipe = ''
+                else: pipe = ' '
 
                 line = '|' + '-' * (space - 1)
-                l = len(self.__keylist)
 
-                if lines:
-                    # Line
-                    print(line * l)
+                # if lines:
+                #     # Line
+                #     print(line * l)
 
-                for i in self.__keylist:
+                if printMain:
+                    print('{0:{1}}'.format(pipe + author, space), end="")
+
+                for i in self._keylist:
                     print('{0:{1}}'.format(pipe + info[i], space), end="")
                 print("")
 
@@ -101,7 +105,7 @@ class View:
                     # Line
                     print(line * l)
             else:
-                self.__printValues(nest - 1, info, space, col, lines, False, False)
+                self._printValues(nest - 1, info, space, col,l, lines, False)
 
 
 if __name__ == '__main__':
@@ -114,12 +118,5 @@ if __name__ == '__main__':
 
     if args.clear: os.system("clear")
 
-    if args.id:
-        view = View(['channelName', 'publishedAfter'])
-        view.show( printMain=True)
-    elif args.table:
-        view = View(['channelName', 'publishedAfter'])
-        view.show(lines=True)
-    else:
-        view = View(['channelName', 'publishedAfter'])
-        view.show()
+    view = View(['channelName', 'publishedAfter'],)
+    view.show(printMain=args.id,lines=args.table)
