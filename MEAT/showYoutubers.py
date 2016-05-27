@@ -3,19 +3,20 @@
 import argparse
 import json
 import os
+from editYoutubers import getFullPathOfScript
 
 
 class View:
     # OrderList is a list with Keys that will be displayed
     def __init__(self, OrderList, path="raw/youtubers.txt"):
-        self._path = path
+        self._path = getFullPathOfScript()+path
         self._source = None
         self._keylist = OrderList
 
-    def show(self, nest=0,lines=False, printMain=False,
-             headingChar='=', path="raw/youtubers.txt"):
+    def show(self, nest=0, lines=False, printMain=False,
+             headingChar='='):
         # load file
-        self._loadFile(path)
+        self._loadFile(self._path)
 
         # Number of columns
         col = os.get_terminal_size().columns
@@ -86,16 +87,23 @@ class View:
         for author, info in dic.items():
             # Key, Main, author
             if nest == 0:
+                # continue if value empty
+                if info == {} or info == [] or info == "":
+                    continue
+
+                # pipe or not
                 if lines or printMain==False: pipe = '|'
                 else: pipe = notPipe
 
+                # if id will be displayed
                 i=0
                 if printMain:
                     print('{0:{1}}'.format(pipe + str(author), space[i]), end="")
                     i+=1
 
+                # print row
                 for key in self._keylist:
-                    print('{0:{1}}'.format(pipe + info[key], space[i]), end="")
+                    print('{0:{1}}'.format(pipe + str(info[key]), space[i]), end="")
                     i+=1
                 print("")
 

@@ -6,6 +6,14 @@ import argparse
 import json
 import os
 from showYoutubers import View
+from editYoutubers import getFullPathOfScript
+
+'''
+
+* tags: edit, show
+
+'''
+
 
 class Vids:
     # Variables
@@ -14,8 +22,8 @@ class Vids:
     #     self.__youtubers - loaded json youtubers
 
     def __init__(self, folderPath="raw/youtubers/", youtubersPath="raw/youtubers.txt"):
-        self.__folderPath = folderPath
-        self.__youtubersPath = youtubersPath
+        self.__folderPath = getFullPathOfScript()+folderPath
+        self.__youtubersPath = getFullPathOfScript()+youtubersPath
         self.__loadYoutubersFile()
 
     def updateAllYoutubers(self, Quick=False, All=False):
@@ -48,7 +56,7 @@ class Vids:
                 if All:
                     date = oneYoutuber['publishedAfter']
                 else:
-                    date = vids[0]['date']
+                    date = self.__incrementFullDate(vids[0]['date'])
 
                 # search
                 JJ = self.__callSearch(oneYoutuber,id,date)
@@ -157,25 +165,52 @@ class Vids:
                 return
         vids.insert(0,toAdd)
 
+    # date = 2016-05-27T18:00:09.000Z
+    def __incrementFullDate(self,date):
+        backup = date
+        # date[0] = 2016-05-27 | date[1] = 18:00:09.000Z
+        date = date.split('T')
+
+        # date[1] = [18,00,09]
+        date[1] = date[1].split('.')[0].split(':')
+
+        if date[1][2] == "59":
+            if date[1][1] == "59":
+                if date[1][0] == "23":
+                    # problem...
+                    return backup
+                else:# +1
+                    date[1][0] = "{:02}".format(int(date[1][0])+1)
+            else:# +1
+                date[1][1] = "{:02}".format(int(date[1][1])+1)
+        else: # +1
+            date[1][2] = "{:02}".format(int(date[1][2])+1)
+
+        return '%sT%s.000Z' % (date[0], ':'.join(date[1]))
 
 # Extend View from youtubers
 class VidsView(View):
     class exList(list):
+        # listv2 with items() like dictionary!
         def items(self):
             return ((i, self[i]) for i in range(len(self)) )
+        def __str__(self):
+            tmp = super().__str__()
+            return ','.join(  tmp[2:-2].split("', '")  )
+
 
     def __init__(self, OrderList, Youtubers, Tags=None, folderPath="raw/youtubers/"):
         super().__init__(OrderList)
         self._youtubers = Youtubers # id's of youtubers
         self._tags = Tags
-        self._folderPath = folderPath
+        self._folderPath = getFullPathOfScript()+folderPath
 
+    # path is here for youtubers.txt not videos
     def show(self, nest=0, lines=False, printMain=False,
-             headingChar='=', path="raw/youtubers.txt"):
+             headingChar='=',heading=True):
 
         # Take youtuber names from id's
-        self._loadFile(path)
-        ytNames = [ self._source[i]['channelName'] for i in self._youtubers ]
+        ytNames = self._getYTNames()
 
         # Number of columns
         col = os.get_terminal_size().columns
@@ -183,24 +218,45 @@ class VidsView(View):
         # Width for one element in a row
         space = self.getSpace(ytNames,self._keylist,printMain=printMain)
 
-        # Make a nice heading with key
-        self._heading(space, printMain=printMain, char=headingChar)
+        if heading:
+            # Make a nice heading with key
+            self._heading(space, printMain=printMain, char=headingChar)
 
         for name in ytNames:
             # load file
             self._loadFile(self._folderPath+name)
 
-            # here remove those without good tags
-            #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            # remove these vids without correct tags
+            Nothing,self._source = self.__omitVidsWithoutTags(self._source,self._tags)
+
+            if Nothing:
+                continue
 
             tmp = self.exList()
             tmp.extend(self._source)
+            self._source = tmp
+
+            # ... and print author
+            # print("")
+            tool._printFramedWord(name,len(name))
 
             # Print main content
-            self._printValues(nest, tmp, space, col,
+            self._printValues(nest, self._source, space, col,
                            lines=lines,
                            printMain=printMain,
                               notPipe='|')
+
+    def _getYTNames(self, path="raw/youtubers.txt"):
+        # Take youtuber names from id's
+        self._loadFile(getFullPathOfScript()+path)
+
+        try:
+            return [ self._source[i]['channelName'] for i in self._youtubers ]
+        except:
+            return self._youtubers
+
+    def getFolderPath(self):
+        return self._folderPath
 
     def getSpace(self,ytNames, keyList, printMain):
         space = []
@@ -218,15 +274,51 @@ class VidsView(View):
 
             i = 0
             if printMain:
-                space[i].append( 1+len(str(len(self._source))) )
+                tmp = 1+len(str(len(self._source)))
+                if tmp < 3: tmp=3
+
+                space[i].append( tmp )
                 i+=1
             #... => for every key
             for key in keyList:
-                space[i].append(1+max(len(dic[key]) for dic in self._source ))
+                space[i].append(1+max(len(str(dic[key])) for dic in self._source ))
                 i += 1
 
         # [[1,2,3],[3,3,5],[2,5,2]]
         return [ max(elist) for elist in space ]
+
+    def _loadFile(self,filePath):
+        super()._loadFile(filePath)
+
+        try:
+            # test = self._source[0]['tags']
+            # change normal list with Tags into exList
+            for dic in self._source:
+                tmp = self.exList()
+                tmp.extend(dic['tags'])
+                dic['tags'] = tmp
+        except:
+            pass
+
+    # returns a tuple (bool: Nothing, list: List)
+    def __omitVidsWithoutTags(self,listDicts, Tags):
+        Tags = set(Tags)
+        tmp =  map( lambda dict:
+             dict if Tags < set(dict['tags'])
+                and 'SHOW' in set(dict['tags'])
+                and 'SEEN' not in set(dict['tags'])
+             else {},
+             listDicts
+        )
+        # We want to check if there is anything interesting
+        tmp = list(tmp)
+
+        for x in tmp:
+            if x != {}:
+                return False, tmp
+
+        # nothing!
+        return True, tmp
 
 
 class YTApi:
@@ -338,8 +430,8 @@ class YTApi:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s","--show",help="type id's which videos will be displayed.", nargs='*')
-    parser.add_argument("--tags",help="Enter lowercase tags to filter display or add them to video", nargs='*')
+    parser.add_argument("-s","--show",help="type youtuber id's or channelNames(name of the file with videos) which videos will be displayed.", nargs='*')
+    parser.add_argument("--tags",help="Enter lowercase tags to filter display or add them to video",default={}, nargs='*')
     parser.add_argument("--remove",help="Remove file with videos by giving id")
     parser.add_argument("-u", "--update",default=False,nargs='?', help="With no argument: update all youtubers, with given id only update that one youtuber")
     # parser.add_argument("-p", "--precise", help="flag for update to merge precisely, can be little bit longer", action='store_true')
@@ -347,17 +439,16 @@ if __name__ == '__main__':
     parser.add_argument("-c", "--clear", help="Clear terminal before printing anything", action='store_true')
     parser.add_argument("-t", "--table", help="Show results in a table", action='store_true')
 
-    # parser.add_argument("-t", "--test", action='store_true')
+    parser.add_argument("--test", action='store_true')
 
     args = parser.parse_args()
 
     if args.clear: os.system("clear")
 
 
-    # if args.test:
-    #     view = VidsView([])
-    #     print(view.reformatISODate( input("Duration is ISO: ") ))
-    #     quit(0)
+    if args.test:
+        print( getFullPathOfScript() )
+        quit(0)
 
 
     if args.update != False:
@@ -367,15 +458,23 @@ if __name__ == '__main__':
             tool.updateAllYoutubers(All=args.all)
         else:
             tool.updateYoutuber(args.update,All=args.all)
-        # if args.update == None:
-        #     tool.updateAllYoutubers(Quick=not args.precise,All=args.all)
-        # elif args.precise or args.all:
-        #     tool.updateYoutuber(args.update,All=args.all)
-        # else:
-        #     tool.updateYoutuber(args.update,Quick=True)
     elif args.remove != None:
         tool = Vids()
         tool.removeVids(args.remove)
     elif args.show != None:
-        tool = VidsView(['title','duration','link'],args.show,args.tags )
+        Cols = ['title','duration','link']
+
+        if args.tags != {}:
+            Cols.append('tags')
+
+        # Show all of them
+        if args.show == []:
+            # init class
+            tmp = VidsView(None,None,None)
+
+            # get all youtubers
+            args.show = os.listdir(  tmp.getFolderPath()  )
+
+        # Call .show with chosen youtubers
+        tool = VidsView(Cols,args.show,args.tags )
         tool.show(0,lines=args.table,printMain=True)

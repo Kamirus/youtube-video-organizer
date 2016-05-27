@@ -5,15 +5,22 @@ from apiclient.errors import HttpError
 from oauth2client.tools import argparser
 import argparse
 import json
-import os
+import os,inspect
 import datetime
 
+# With that we can have full path
+def getFullPathOfScript():
+    return "%s/" % os.path.dirname(
+            os.path.abspath(
+                inspect.getfile(inspect.currentframe())
+                )
+            )
 
 class editYoutubers:
     __date = '1970-01-01'
 
     def __init__(self,path="raw/youtubers.txt"):
-        self.__path = path
+        self.__path = getFullPathOfScript()+path
         self.__source = None
         dir_file = self.__path.rsplit('/', maxsplit=1)
         if dir_file[1] not in os.listdir(dir_file[0]):
