@@ -56,9 +56,12 @@ class Vids:
                 # merging into vids
                 if Quick:
                     for toAdd in JJ:
+                        print('qNEW: {} by {:<}'.format(toAdd['title'],oneYoutuber['channelName']))
                         self.__quickMergeAssistant(toAdd,vids,0)
                 else:
+                    JJ.reverse()
                     for toAdd in JJ:
+                        print('NEW: {} by {:<}'.format(toAdd['title'],oneYoutuber['channelName']))
                         self.__preciseMergeAssistant(toAdd,vids)
 
                 self.__saveFile(vids,oneYoutuber['channelName'])
@@ -151,6 +154,8 @@ class Vids:
         for k in range(len(vids)):
             if toAdd['link'] == vids[k]['link']:
                 self.__mergeDicts(toAdd,vids[k])
+                return
+        vids.insert(0,toAdd)
 
 
 # Extend View from youtubers
@@ -170,32 +175,58 @@ class VidsView(View):
 
         # Take youtuber names from id's
         self._loadFile(path)
-        ytNames = ( self._youtubers[i]['channelName'] for i in self._youtubers )
+        ytNames = [ self._source[i]['channelName'] for i in self._youtubers ]
 
         # Number of columns
         col = os.get_terminal_size().columns
 
         # Width for one element in a row
-        if printMain:
-            l = (len(self._keylist)+1)
-            space = col // l
-        else:
-            l = len(self._keylist)
-            space = col // l
+        space = self.getSpace(ytNames,self._keylist,printMain=printMain)
 
         # Make a nice heading with key
-        self._heading(space, l,printMain=printMain, char=headingChar)
+        self._heading(space, printMain=printMain, char=headingChar)
 
         for name in ytNames:
             # load file
             self._loadFile(self._folderPath+name)
-            self._source = self.exList().extend(self._source)
+
+            # here remove those without good tags
+            #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            tmp = self.exList()
+            tmp.extend(self._source)
 
             # Print main content
-            self._printValues(nest, self._source, space, col,l,
+            self._printValues(nest, tmp, space, col,
                            lines=lines,
-                           printMain=printMain)
+                           printMain=printMain,
+                              notPipe='|')
 
+    def getSpace(self,ytNames, keyList, printMain):
+        space = []
+
+        # init empty lists
+        for k in keyList:
+            space.append([])
+
+        if printMain:
+            space.append([])
+
+        # for every file ...
+        for name in ytNames:
+            self._loadFile(self._folderPath+name)
+
+            i = 0
+            if printMain:
+                space[i].append( 1+len(str(len(self._source))) )
+                i+=1
+            #... => for every key
+            for key in keyList:
+                space[i].append(1+max(len(dic[key]) for dic in self._source ))
+                i += 1
+
+        # [[1,2,3],[3,3,5],[2,5,2]]
+        return [ max(elist) for elist in space ]
 
 
 class YTApi:
@@ -264,10 +295,11 @@ class YTApi:
             vids.append({
                 'title': video_result["snippet"]["title"],
                 'duration': self.reformatISODate(video_result['contentDetails']['duration']),
+                # 'duration': video_result['contentDetails']['duration'],
                 'link': 'www.youtube.com/watch?v='+video_result["id"],
                 'date': video_result['snippet']['publishedAt'],
+                # 'description': video_result["snippet"]["description"],
                 'tags': ['SHOW']
-                # 'description': video_result["snippet"]["description"]
             })
 
         # return vids
@@ -295,7 +327,9 @@ class YTApi:
                 m = int(tmp[0])
                 iso = tmp[1]
 
-            s = int(iso[:-1])
+            if 'S' in iso:
+                tmp = iso.split('S')
+                s = int(tmp[0])
 
             return "{:02}:{:02}:{:02}".format(h,m,s)
         except:
@@ -304,34 +338,44 @@ class YTApi:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument("-s","--show",help="type id's which videos will be displayed.", nargs='*')
+    parser.add_argument("--tags",help="Enter lowercase tags to filter display or add them to video", nargs='*')
     parser.add_argument("--remove",help="Remove file with videos by giving id")
     parser.add_argument("-u", "--update",default=False,nargs='?', help="With no argument: update all youtubers, with given id only update that one youtuber")
-    parser.add_argument("-p", "--precise", help="flag for update to merge precisely, can be little bit longer", action='store_true')
-    parser.add_argument("-a", "--all", help="flag for update to check ALL videos PRECISELY once again", action='store_true')
+    # parser.add_argument("-p", "--precise", help="flag for update to merge precisely, can be little bit longer", action='store_true')
+    parser.add_argument("-a", "--all", help="flag for update to check ALL videos once again", action='store_true')
     parser.add_argument("-c", "--clear", help="Clear terminal before printing anything", action='store_true')
+    parser.add_argument("-t", "--table", help="Show results in a table", action='store_true')
 
-    parser.add_argument("-t", "--test", action='store_true')
+    # parser.add_argument("-t", "--test", action='store_true')
 
     args = parser.parse_args()
 
     if args.clear: os.system("clear")
 
 
-    if args.test:
-        view = VidsView([])
-        print(view.reformatISODate( input("Duration is ISO: ") ))
-        quit(0)
+    # if args.test:
+    #     view = VidsView([])
+    #     print(view.reformatISODate( input("Duration is ISO: ") ))
+    #     quit(0)
 
 
     if args.update != False:
         tool = Vids()
         print("Updating...")
         if args.update == None:
-            tool.updateAllYoutubers(Quick=not args.precise,All=args.all)
-        elif args.precise or args.all:
-            tool.updateYoutuber(args.update,All=args.all)
+            tool.updateAllYoutubers(All=args.all)
         else:
-            tool.updateYoutuber(args.update,Quick=True)
+            tool.updateYoutuber(args.update,All=args.all)
+        # if args.update == None:
+        #     tool.updateAllYoutubers(Quick=not args.precise,All=args.all)
+        # elif args.precise or args.all:
+        #     tool.updateYoutuber(args.update,All=args.all)
+        # else:
+        #     tool.updateYoutuber(args.update,Quick=True)
     elif args.remove != None:
         tool = Vids()
         tool.removeVids(args.remove)
+    elif args.show != None:
+        tool = VidsView(['title','duration','link'],args.show,args.tags )
+        tool.show(0,lines=args.table,printMain=True)

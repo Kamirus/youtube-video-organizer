@@ -12,8 +12,8 @@ class View:
         self._source = None
         self._keylist = OrderList
 
-    def show(self, nest=0,
-             lines=False, printMain=False, headingChar='=', path="raw/youtubers.txt"):
+    def show(self, nest=0,lines=False, printMain=False,
+             headingChar='=', path="raw/youtubers.txt"):
         # load file
         self._loadFile(path)
 
@@ -21,18 +21,17 @@ class View:
         col = os.get_terminal_size().columns
 
         # Width for one element in a row
+        space = []
         if printMain:
-            l = (len(self._keylist)+1)
-            space = col // l
-        else:
-            l = len(self._keylist)
-            space = col // l
+            space.append(1+max(len(i) for i,_ in self._source.items() ))
+        for key in self._keylist:
+            space.append(1+max(len(val[key]) for _,val in self._source.items() ))
 
         # Make a nice heading with key
-        self._heading(space, l, printMain=printMain, char=headingChar)
+        self._heading(space, printMain=printMain, char=headingChar)
 
         # Print main content
-        self._printValues(nest, self._source, space, col,l,
+        self._printValues(nest, self._source, space, col,
                            lines=lines,
                            printMain=printMain)
 
@@ -44,22 +43,24 @@ class View:
         except:
             raise ValueError("[ERROR]\ncannot load file")
 
-    def _heading(self, space, l, printMain, char='='):
-        line = '|' + char * (space - 1)
-
+    def _heading(self, space, printMain, char='='):
         # Line
-        print(line * l)
+        self._printLine(space)
 
         # id
+        i=0
         if printMain:
-            print('{0:{1}}'.format('|' + 'id', space), end="")
+            print('{0:{1}}'.format('|' + 'id', space[i]), end="")
+            i+=1
 
         # key
         for elem in self._keylist:
-            print('{0:{1}}'.format('|' + elem, space), end="")
+            print('{0:{1}}'.format('|' + elem, space[i]), end="")
+            i+=1
+        print('')
 
         # Line
-        print(line * l)
+        self._printLine(space)
 
     def _printFramedWord(self, Word, width, centered=False, char='='):
         # |====|
@@ -76,7 +77,7 @@ class View:
         print(frmt.format(Word, width))
         print(frmt.format(a, width))
 
-    def _printValues(self, nest, dic, space, col, l, lines=True, printMain=False):
+    def _printValues(self, nest, dic, space, col, lines=True, printMain=False, notPipe=' '):
         # nest : if 0 then print row else if printMain then print KEY fi; _printValues(nest-1,...)
         # dic : dictionary that is json
         # space : width of element in row
@@ -86,26 +87,28 @@ class View:
             # Key, Main, author
             if nest == 0:
                 if lines or printMain==False: pipe = '|'
-                else: pipe = ' '
+                else: pipe = notPipe
 
-                line = '|' + '-' * (space - 1)
-
-                # if lines:
-                #     # Line
-                #     print(line * l)
-
+                i=0
                 if printMain:
-                    print('{0:{1}}'.format(pipe + author, space), end="")
+                    print('{0:{1}}'.format(pipe + str(author), space[i]), end="")
+                    i+=1
 
-                for i in self._keylist:
-                    print('{0:{1}}'.format(pipe + info[i], space), end="")
+                for key in self._keylist:
+                    print('{0:{1}}'.format(pipe + info[key], space[i]), end="")
+                    i+=1
                 print("")
 
                 if lines:
                     # Line
-                    print(line * l)
+                    self._printLine(space,'-')
             else:
-                self._printValues(nest - 1, info, space, col,l, lines, False)
+                self._printValues(nest - 1, info, space, col, lines, False,notPipe=notPipe)
+
+    def _printLine(self,space,char='='):
+        for i in space:
+            print('|'+char*(i-1),end='')
+        print('')
 
 
 if __name__ == '__main__':
