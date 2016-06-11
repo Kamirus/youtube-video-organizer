@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+from View import VidsView
+from Vids import UpdateVids,RemoveVids
+
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-s","--show",help="type youtuber id's or channelNames(name of the file with videos) which videos will be displayed.", nargs='*')
+    parser.add_argument("--tags",help="Enter lowercase tags to filter display or add them to video",default={}, nargs='*')
+    parser.add_argument("--remove",help="Remove file with videos by giving id")
+    parser.add_argument("-u", "--update",default=False,nargs='?', help="With no argument: update all youtubers, with given id only update that one youtuber")
+    # parser.add_argument("-p", "--precise", help="flag for update to merge precisely, can be little bit longer", action='store_true')
+    parser.add_argument("-a", "--all", help="flag for update to check ALL videos once again", action='store_true')
+    parser.add_argument("-c", "--clear", help="Clear terminal before printing anything", action='store_true')
+    parser.add_argument("-t", "--table", help="Show results in a table", action='store_true')
+
+    # parser.add_argument("--test", action='store_true')
+
+    args = parser.parse_args()
+
+
+    if args.clear: os.system("clear")
+
+    # if args.test:
+    #     print( getFullPathOfScript() )
+    #     quit(0)
+
+    # UPDATE
+    if args.update != False:
+        tool = UpdateVids()
+        print("Updating...")
+        if args.update == None:
+            try:
+                tool.updateAllYoutubers(All=args.all)
+            except Exception as e:
+                print("[ERROR] = %s" % e)
+        else:
+            try:
+                tool.updateYoutuber(args.update,All=args.all)
+            except Exception as e:
+                print("[ERROR] = %s" % e)
+    # REMOVE
+    elif args.remove != None:
+        tool = RemoveVids()
+        try:
+            tool.removeVids(args.remove)
+        except Exception as e:
+                print("[ERROR] = %s" % e)
+    # SHOW
+    elif args.show != None:
+        Cols = ['title','duration','link']
+
+        if args.tags != {}:
+            Cols.append('tags')
+
+        # Show all of them
+        if args.show == []:
+            # init class
+            tmp = VidsView(None,None,None)
+
+            # get all youtubers
+            args.show = os.listdir(  tmp.getFolderPath()  )
+
+        # Call .show with chosen youtubers
+        try:
+            tool = VidsView(Cols,args.show,args.tags )
+            tool.show(0,lines=args.table,printMain=True)
+        except Exception as e:
+                print("[ERROR] = %s" % e)

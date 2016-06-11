@@ -1,9 +1,8 @@
 {
-    "tags": [
-        "funny",
-        "music",
-        "vlog",
-        "gameplay",
-        "education"
+    "maxCharsForTitle": 45,
+    "dontChangeValuesInThatListWhileUpdatingAll": [
+        "show",
+        "seen",
+        "tags"
     ]
 }

@@ -1,47 +1,56 @@
 [
     {
-        "date": "2016-05-24T21:05:36.000Z",
+        "duration": "00:12:30",
+        "show": true,
+        "seen": false,
+        "link": "www.youtube.com/watch?v=nv6iyrz5q1Q",
+        "title": "Masochista 41 - \"Sprawa się rypła\"",
+        "date": "2016-06-11T12:19:39.000Z",
+        "tags": []
+    },
+    {
         "duration": "00:20:32",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=UcgguI_RP1M",
         "title": "Masochista 40 - \"Jest sprawa\"",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-05-24T21:05:36.000Z",
+        "tags": []
     },
     {
-        "date": "2016-05-24T18:33:49.000Z",
         "duration": "00:00:15",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=tlSjXkkz6iQ",
         "title": "Masochista 40 \"Jest sprawa\" [TRAILER]",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-05-24T18:33:49.000Z",
+        "tags": []
     },
     {
-        "date": "2016-05-17T16:37:19.000Z",
         "duration": "00:12:49",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=Dy1rRD-qXTA",
-        "title": "NIE IDŹCIE DO KINA NA \"#WSZYSTKOGRA\"!!! | Mietczyński",
-        "tags": [
-            "SHOW"
-        ]
+        "title": "NIE IDŹCIE DO KINA NA \"#WSZYSTKOGRA\"!!! | Mie",
+        "date": "2016-05-17T16:37:19.000Z",
+        "tags": []
     },
     {
-        "date": "2016-05-03T17:35:56.000Z",
         "duration": "00:16:00",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=ZXxswfAbkQM",
         "title": "Lekcje Niczego - EPOKI | Mietczyński",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-05-03T17:35:56.000Z",
+        "tags": []
     },
     {
-        "date": "2016-05-03T15:51:22.000Z",
         "duration": "05:20:20",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=9-fUQE1S7RI",
-        "title": "WSZYSTKIE STRESZCZENIA p.Niczego | Mietczyński",
-        "tags": [
-            "SHOW"
-        ]
+        "title": "WSZYSTKIE STRESZCZENIA p.Niczego | Mietczyńsk",
+        "date": "2016-05-03T15:51:22.000Z",
+        "tags": []
     }
 ]

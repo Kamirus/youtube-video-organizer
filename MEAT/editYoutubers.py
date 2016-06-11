@@ -1,26 +1,15 @@
 #!/usr/bin/env python3
 
-from apiclient.discovery import build
-from apiclient.errors import HttpError
-from oauth2client.tools import argparser
-import argparse
-import json
-import os,inspect
-import datetime
+import argparse, json, os, datetime
+from Settings import getFullPathOfScript
+from YTApi import YTApi
 
-# With that we can have full path
-def getFullPathOfScript():
-    return "%s/" % os.path.dirname(
-            os.path.abspath(
-                inspect.getfile(inspect.currentframe())
-                )
-            )
 
-class editYoutubers:
+class EditYoutubers:
     __date = '1970-01-01'
 
-    def __init__(self,path="raw/youtubers.txt"):
-        self.__path = getFullPathOfScript()+path
+    def __init__(self, path="raw/youtubers.txt"):
+        self.__path = getFullPathOfScript() + path
         self.__source = None
         dir_file = self.__path.rsplit('/', maxsplit=1)
         if dir_file[1] not in os.listdir(dir_file[0]):
@@ -66,13 +55,13 @@ class editYoutubers:
     def AddYouTuberByChannelId(self, id, publishedAfter=__date):
         self.AddYouTuber(id, "channelId", publishedAfter)
 
-    def RemoveYoutuber(self,id):
+    def RemoveYoutuber(self, id):
         # Load database
         if self.__source == None:
             self.__loadFile()
 
         try:
-            del(self.__source[id])
+            del (self.__source[id])
         except:
             raise ValueError("Nothing to be removed")
 
@@ -112,7 +101,7 @@ class editYoutubers:
     def __fillMember(self, id, idType, publishedAfter):
         return {
             'idType': idType,
-            'channelName': self.__getChannelName((idType[0], id)),
+            'channelName': YTApi.getChannelName((idType[0], id)),
             'publishedAfter': self.__getProperDate(publishedAfter)
         }
 
@@ -126,51 +115,18 @@ class editYoutubers:
         finally:
             return Date + "T00:00:00Z"
 
-    # can raise ValueError or other http err
-    # Tuple = (uOrC, userOrChannelID)
-    def __getChannelName(self, Tuple):
-        DEVELOPER_KEY = "AIzaSyCYa3J7eFc1tK5HUZDuUWV9_tY58dU3CSY"
-        YOUTUBE_API_SERVICE_NAME = "youtube"
-        YOUTUBE_API_VERSION = "v3"
-
-        youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
-                        developerKey=DEVELOPER_KEY)
-
-        (uOrID, userOrChannelID) = Tuple
-        if uOrID.casefold() == 'u':
-            for_username = userOrChannelID
-
-            chlist = youtube.channels().list(
-                forUsername=for_username,
-                part="snippet"
-            ).execute()
-
-            return chlist.get("items", [])[0]["snippet"]["title"]
-        elif uOrID.casefold() == 'c':
-            ID = userOrChannelID
-
-            chlist = youtube.channels().list(
-                id=ID,
-                part="snippet"
-            ).execute()
-
-            return chlist.get("items", [])[0]["snippet"]["title"]
-        else:
-            raise ValueError('Wrong TUPLE, First argument can be: U or C')
-
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--remove", help="Remove youtuber by giving his id")
-    parser.add_argument("-a","--add", help="Add youtuber by giving username (-u) or " \
-                                      "channelId (-c), related with -u -c --date" \
-                                      " | example: python3 editYoutubers.py --add SomeUserName -u")
-    parser.add_argument("-d","--date", help="Videos published before this date:" \
-                                       "YYYY-MM-DD will be omitted", type=str, default='1970-01-01')
+    parser.add_argument("-a", "--add", help="Add youtuber by giving username (-u) or " \
+                                            "channelId (-c), related with -u -c --date" \
+                                            " | example: python3 editYoutubers.py --add SomeUserName -u")
+    parser.add_argument("-d", "--date", help="Videos published before this date:" \
+                                             "YYYY-MM-DD will be omitted", type=str, default='1970-01-01')
     parser.add_argument("-U", help="add by username", action='store_true')
     parser.add_argument("-C", help="add by channel id", action='store_true')
-    parser.add_argument("-c","--clear", help="clear terminal before taking other actions", action='store_true')
+    parser.add_argument("-c", "--clear", help="clear terminal before taking other actions", action='store_true')
 
     args = parser.parse_args()
 
@@ -184,13 +140,13 @@ if __name__ == '__main__':
         else:
             by = "channelId"
         print("Adding {} by {}, published after:{}".format(args.add, by, args.date))
-        Obj = editYoutubers()
+        Obj = EditYoutubers()
         try:
             Obj.AddYouTuber(args.add, by, args.date)
         except Exception as e:
             print("[ERROR] = %s" % e)
     elif args.remove != None:
-        Obj = editYoutubers()
+        Obj = EditYoutubers()
         print("Removing %s" % args.remove)
         try:
             Obj.RemoveYoutuber(args.remove)

@@ -1,398 +1,416 @@
 [
     {
-        "date": "2016-05-25T15:45:27.000Z",
+        "duration": "00:08:01",
+        "show": true,
+        "seen": false,
+        "link": "www.youtube.com/watch?v=yDNAsyBmmQw",
+        "title": "Very – tylko „bardzo”? | Po Cudzemu #46",
+        "date": "2016-06-08T19:50:16.000Z",
+        "tags": []
+    },
+    {
+        "duration": "00:10:46",
+        "show": true,
+        "seen": false,
+        "link": "www.youtube.com/watch?v=gYaKtceCCCw",
+        "title": "Chemistry, Chicago, chess | Po Cudzemu #45",
+        "date": "2016-06-01T15:50:19.000Z",
+        "tags": []
+    },
+    {
         "duration": "00:05:00",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=amzfd-tKMdA",
         "title": "Often – czy t jest nieme? | Po Cudzemu #44",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-05-25T15:45:27.000Z",
+        "tags": []
     },
     {
-        "date": "2016-05-18T15:38:46.000Z",
         "duration": "00:06:27",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=2y5ft4auvhA",
         "title": "Bird, beard, beer i bear | Po Cudzemu #43",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-05-18T15:38:46.000Z",
+        "tags": []
     },
     {
-        "date": "2016-05-11T17:14:17.000Z",
         "duration": "00:10:50",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=sQDUt3HJr3U",
-        "title": "May the Force/Fourth i majówka | Po Cudzemu #42",
-        "tags": [
-            "SHOW"
-        ]
+        "title": "May the Force/Fourth i majówka | Po Cudzemu #",
+        "date": "2016-05-11T17:14:17.000Z",
+        "tags": []
     },
     {
-        "date": "2016-05-04T16:16:30.000Z",
         "duration": "00:06:48",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=tFXODw1Ep5g",
         "title": "Social media a soszjal | Po Cudzemu #41",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-05-04T16:16:30.000Z",
+        "tags": []
     },
     {
-        "date": "2016-04-27T15:32:10.000Z",
         "duration": "00:14:00",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=DW3xcw4Vg1w",
         "title": "Jak się uczyć słówek? | Po Cudzemu #40",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-04-27T15:32:10.000Z",
+        "tags": []
     },
     {
-        "date": "2016-04-20T15:26:09.000Z",
         "duration": "00:06:57",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=QCiC3jASUMA",
         "title": "Morning routine a rutyna | Po Cudzemu #39",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-04-20T15:26:09.000Z",
+        "tags": []
     },
     {
-        "date": "2016-04-12T15:17:16.000Z",
         "duration": "00:12:06",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=alKXinwLIrU",
-        "title": "Law i low, saw i so, bought i boat | Po Cudzemu #38",
-        "tags": [
-            "SHOW"
-        ]
+        "title": "Law i low, saw i so, bought i boat | Po Cudze",
+        "date": "2016-04-12T15:17:16.000Z",
+        "tags": []
     },
     {
-        "date": "2016-04-06T15:26:10.000Z",
         "duration": "00:08:56",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=B_89Y6AMut0",
-        "title": "Less czy fewer? Little, a little, few, a few | Po Cudzemu #37",
-        "tags": [
-            "SHOW"
-        ]
+        "title": "Less czy fewer? Little, a little, few, a few ",
+        "date": "2016-04-06T15:26:10.000Z",
+        "tags": []
     },
     {
-        "date": "2016-03-30T15:43:56.000Z",
         "duration": "00:06:55",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=k1AYDM1zbmo",
         "title": "Czy recipe to recepta? | Po Cudzemu #36",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-03-30T15:43:56.000Z",
+        "tags": []
     },
     {
-        "date": "2016-03-23T16:37:12.000Z",
         "duration": "00:10:28",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=1Jtt6cjrFrE",
         "title": "This, that, these, those | Po Cudzemu #35",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-03-23T16:37:12.000Z",
+        "tags": []
     },
     {
-        "date": "2016-03-16T16:31:02.000Z",
         "duration": "00:06:11",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=1QCeEB5n5MQ",
         "title": "Sing, going, amazing | Po Cudzemu #34",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-03-16T16:31:02.000Z",
+        "tags": []
     },
     {
-        "date": "2016-03-08T16:15:48.000Z",
         "duration": "00:03:57",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=Ce-NOh47lL0",
         "title": "All the Women! | Po Cudzemu #33",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-03-08T16:15:48.000Z",
+        "tags": []
     },
     {
-        "date": "2016-03-02T15:54:32.000Z",
         "duration": "00:08:36",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=4Fn5uuKym9I",
         "title": "Man, Batman i Superman | Po Cudzemu #32",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-03-02T15:54:32.000Z",
+        "tags": []
     },
     {
-        "date": "2016-02-24T16:42:00.000Z",
         "duration": "00:07:15",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=Rh_tQq9alh4",
         "title": "Kinda, outta, gotcha | Po Cudzemu #31",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-02-24T16:42:00.000Z",
+        "tags": []
     },
     {
-        "date": "2016-02-10T17:13:40.000Z",
         "duration": "00:18:09",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=--aROcutJdQ",
-        "title": "McConaughey i inne trudne nazwiska | Po Cudzemu #29",
-        "tags": [
-            "SHOW"
-        ]
+        "title": "McConaughey i inne trudne nazwiska | Po Cudze",
+        "date": "2016-02-10T17:13:40.000Z",
+        "tags": []
     },
     {
-        "date": "2016-02-04T15:57:36.000Z",
         "duration": "00:09:50",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=HBlroxR2OP4",
         "title": "Shut up! Let it go! | Po Cudzemu #28",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-02-04T15:57:36.000Z",
+        "tags": []
     },
     {
-        "date": "2016-01-27T16:26:49.000Z",
         "duration": "00:06:09",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=zlMjWLIPVrE",
         "title": "Spoiler alert! | Po Cudzemu #27",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-01-27T16:26:49.000Z",
+        "tags": []
     },
     {
-        "date": "2016-01-21T14:01:25.000Z",
         "duration": "00:10:09",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=wk6ZjGp1xOg",
         "title": "Gonna, wanna, gotta | Po Cudzemu #26",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-01-21T14:01:25.000Z",
+        "tags": []
     },
     {
-        "date": "2016-01-13T15:51:58.000Z",
         "duration": "00:10:33",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=3bDl8ageSzc",
-        "title": "World, birthday, girl - jak nie połamać języka? | Po Cudzemu #25",
-        "tags": [
-            "SHOW"
-        ]
+        "title": "World, birthday, girl - jak nie połamać język",
+        "date": "2016-01-13T15:51:58.000Z",
+        "tags": []
     },
     {
-        "date": "2016-01-06T17:12:06.000Z",
         "duration": "00:10:15",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=PUVVMG_B8jM",
         "title": "2016. Twenty sixteen? | Po Cudzemu #24",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2016-01-06T17:12:06.000Z",
+        "tags": []
     },
     {
-        "date": "2015-12-30T15:05:10.000Z",
         "duration": "00:04:59",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=TMiYyHUAcC0",
         "title": "Promotion = promocja? | Po Cudzemu #23",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2015-12-30T15:05:10.000Z",
+        "tags": []
     },
     {
-        "date": "2015-12-22T16:56:41.000Z",
         "duration": "00:08:34",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=v0PGiy6fW7Y",
         "title": "Xmas czy Christmas? | Po Cudzemu #22",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2015-12-22T16:56:41.000Z",
+        "tags": []
     },
     {
-        "date": "2015-12-16T17:29:45.000Z",
         "duration": "00:06:57",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=qJxyj5ZTdk8",
-        "title": "Won’t i want, czyli chcąc nie chcąc | Po Cudzemu #21",
-        "tags": [
-            "SHOW"
-        ]
+        "title": "Won’t i want, czyli chcąc nie chcąc | Po Cudz",
+        "date": "2015-12-16T17:29:45.000Z",
+        "tags": []
     },
     {
-        "date": "2015-12-10T16:09:41.000Z",
         "duration": "00:16:55",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=RIFjbQMSGIs",
-        "title": "Czy warto studiować filologię? | Po Cudzemu #20",
-        "tags": [
-            "SHOW"
-        ]
+        "title": "Czy warto studiować filologię? | Po Cudzemu #",
+        "date": "2015-12-10T16:09:41.000Z",
+        "tags": []
     },
     {
-        "date": "2015-12-03T16:28:03.000Z",
         "duration": "00:13:37",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=WU_Kd2Qc6no",
         "title": "Hotel, event, desert | Po Cudzemu #19",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2015-12-03T16:28:03.000Z",
+        "tags": []
     },
     {
-        "date": "2015-11-25T21:05:53.000Z",
         "duration": "00:11:10",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=TIr9U9RhXKU",
-        "title": "Can’t, czyli co? Ja nie mogę? | Po Cudzemu #18",
-        "tags": [
-            "SHOW"
-        ]
+        "title": "Can’t, czyli co? Ja nie mogę? | Po Cudzemu #1",
+        "date": "2015-11-25T21:05:53.000Z",
+        "tags": []
     },
     {
-        "date": "2015-11-18T19:48:09.000Z",
         "duration": "00:07:14",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=6FV9ds64ESU",
         "title": "Though - co, jak i gdzie? | Po Cudzemu #17",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2015-11-18T19:48:09.000Z",
+        "tags": []
     },
     {
-        "date": "2015-11-12T20:24:28.000Z",
         "duration": "00:09:36",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=Dwu21lix6To",
-        "title": "Anything - wszystko albo nic? | Po Cudzemu #16",
-        "tags": [
-            "SHOW"
-        ]
+        "title": "Anything - wszystko albo nic? | Po Cudzemu #1",
+        "date": "2015-11-12T20:24:28.000Z",
+        "tags": []
     },
     {
-        "date": "2015-11-06T17:01:37.000Z",
         "duration": "00:14:37",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=5_doMgv6w7E",
         "title": "Q&A nr 1, czyli jak ja to robię? | Po Cudzemu",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2015-11-06T17:01:37.000Z",
+        "tags": []
     },
     {
-        "date": "2015-10-29T14:15:18.000Z",
         "duration": "00:05:42",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=F7HblQikXyk",
         "title": "Live, czyli jak żyć? | Po Cudzemu #15",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2015-10-29T14:15:18.000Z",
+        "tags": []
     },
     {
-        "date": "2015-10-21T13:38:42.000Z",
         "duration": "00:10:07",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=mEfuiZnChDw",
         "title": "Ain’t - co to jest? | Po Cudzemu #14",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2015-10-21T13:38:42.000Z",
+        "tags": []
     },
     {
-        "date": "2015-10-14T13:39:12.000Z",
         "duration": "00:05:31",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=WsRgtKfSlRA",
         "title": "Mountain i „dziękuję z góry” | Po Cudzemu #13",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2015-10-14T13:39:12.000Z",
+        "tags": []
     },
     {
-        "date": "2015-10-08T14:49:37.000Z",
         "duration": "00:10:38",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=GlHvI8FqBdw",
-        "title": "Shit czy sheet? Bitch czy beach? | Po Cudzemu #12",
-        "tags": [
-            "SHOW"
-        ]
+        "title": "Shit czy sheet? Bitch czy beach? | Po Cudzemu",
+        "date": "2015-10-08T14:49:37.000Z",
+        "tags": []
     },
     {
-        "date": "2015-09-30T18:16:03.000Z",
         "duration": "00:05:08",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=-9Q6kEgLIl8",
         "title": "Basic - bejsyk czy bejzik? | Po Cudzemu #11",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2015-09-30T18:16:03.000Z",
+        "tags": []
     },
     {
-        "date": "2015-09-23T17:22:53.000Z",
         "duration": "00:12:29",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=yT5FUx7xrp8",
-        "title": "Jak się nie bać mówić po angielsku? | Po Cudzemu #10",
-        "tags": [
-            "SHOW"
-        ]
+        "title": "Jak się nie bać mówić po angielsku? | Po Cudz",
+        "date": "2015-09-23T17:22:53.000Z",
+        "tags": []
     },
     {
-        "date": "2015-09-17T15:19:30.000Z",
         "duration": "00:05:43",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=3v-It9S9730",
-        "title": "Iron Man i Iron Maiden - ajron? | Po Cudzemu #9",
-        "tags": [
-            "SHOW"
-        ]
+        "title": "Iron Man i Iron Maiden - ajron? | Po Cudzemu ",
+        "date": "2015-09-17T15:19:30.000Z",
+        "tags": []
     },
     {
-        "date": "2015-09-10T13:26:47.000Z",
         "duration": "00:11:05",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=CRSYsgnP_K8",
         "title": "Thor, czyli język między zęby | Po Cudzemu #8",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2015-09-10T13:26:47.000Z",
+        "tags": []
     },
     {
-        "date": "2015-09-02T13:20:36.000Z",
         "duration": "00:07:01",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=CGiGlCSJius",
         "title": "Ile masz lat? 18? | Po Cudzemu #7",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2015-09-02T13:20:36.000Z",
+        "tags": []
     },
     {
-        "date": "2015-08-26T19:23:48.000Z",
         "duration": "00:07:18",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=jC7C8Q1WQG8",
-        "title": "Jak czytasz YouTube - jutjub czy jutub? | Po Cudzemu #6",
-        "tags": [
-            "SHOW"
-        ]
+        "title": "Jak czytasz YouTube - jutjub czy jutub? | Po ",
+        "date": "2015-08-26T19:23:48.000Z",
+        "tags": []
     },
     {
-        "date": "2015-08-19T12:30:06.000Z",
         "duration": "00:08:08",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=rsKc1FNmsXM",
-        "title": "Dick, Bob, Bill, Jack - co to za imiona? | Po Cudzemu #5",
-        "tags": [
-            "SHOW"
-        ]
+        "title": "Dick, Bob, Bill, Jack - co to za imiona? | Po",
+        "date": "2015-08-19T12:30:06.000Z",
+        "tags": []
     },
     {
-        "date": "2015-08-12T18:41:21.000Z",
         "duration": "00:04:37",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=O-L2RWwJjNQ",
         "title": "Oh my God! - god czy gad? | Po Cudzemu #4",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2015-08-12T18:41:21.000Z",
+        "tags": []
     },
     {
-        "date": "2015-08-07T16:57:51.000Z",
         "duration": "00:08:52",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=kXWQgRkXJqE",
         "title": "Angielski alfabet to banał | Po Cudzemu #3",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2015-08-07T16:57:51.000Z",
+        "tags": []
     },
     {
-        "date": "2015-08-07T16:57:51.000Z",
         "duration": "00:04:07",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=2nG-kTU1xkk",
         "title": "I’m from Poland. Holland? | Po Cudzemu #1",
-        "tags": [
-            "SHOW"
-        ]
+        "date": "2015-08-07T16:57:51.000Z",
+        "tags": []
     },
     {
-        "date": "2015-08-07T16:57:51.000Z",
         "duration": "00:05:42",
+        "show": true,
+        "seen": false,
         "link": "www.youtube.com/watch?v=xvQWUAXJww4",
-        "title": "Minecraft, LOL, GTA i inne gry | Po Cudzemu #2",
-        "tags": [
-            "SHOW"
-        ]
+        "title": "Minecraft, LOL, GTA i inne gry | Po Cudzemu #",
+        "date": "2015-08-07T16:57:51.000Z",
+        "tags": []
     }
 ]

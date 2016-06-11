@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+from Vids import EditVids
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("Youtuber", help="First enter id or channelName of youtuber whose vids You want to edit")
+    parser.add_argument("Ids", help="Enter id's of videos", type=int, nargs='*',default=[])
+    parser.add_argument("Option",choices=['seen','addTags','removeTags','dontShow','unseen','show'])
+    parser.add_argument("--tags",nargs='*')
+    parser.add_argument("--clear", help="Clear terminal before printing anything", action='store_true')
+    # parser.add_argument("--test", action='store_true')
+
+    args = parser.parse_args()
+
+    if args.clear:
+        os.system('clear')
+
+    edit = EditVids()
+
+    op = args.Option
+    if op == 'seen':
+        try:
+            edit.seen(args.Youtuber,args.Ids)
+            print("Marked them as 'seen'!")
+        except Exception as e:
+            print("[ERROR]",e,sep='\n')
+    elif op == 'unseen':
+        try:
+            edit.seen(args.Youtuber,args.Ids,False)
+            print("Removed 'seen' mark")
+        except Exception as e:
+            print("[ERROR]",e,sep='\n')
+    elif op == 'addTags':
+        try:
+            edit.addTags(args.Youtuber,args.Ids,args.tags)
+            if args.tags:
+                print("Added tags")
+            else:
+                print("No tags :(")
+        except Exception as e:
+            print("[ERROR]",e,sep='\n')
+    elif op == 'removeTags':
+        try:
+            edit.removeTags(args.Youtuber,args.Ids,args.tags)
+            if args.tags:
+                print("Tags have been removed for given videos")
+            else:
+                print("No tags :(")
+        except Exception as e:
+            print("[ERROR]",e,sep='\n')
+    if op == 'show':
+        try:
+            edit.show(args.Youtuber,args.Ids)
+            print("Made them show-able, but maybe You saw them already? ('seen')")
+        except Exception as e:
+            print("[ERROR]",e,sep='\n')
+    if op == 'dontShow':
+        try:
+            edit.show(args.Youtuber,args.Ids,False)
+            print("These videos will never hurt You again!")
+        except Exception as e:
+            print("[ERROR]",e,sep='\n')
