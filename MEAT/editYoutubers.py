@@ -81,7 +81,7 @@ class editYoutubers:
     def __show(self):
         try:
             file = open(self.__path, 'r')
-            print(json.dumps(json.load(file), indent=4))
+            print(json.dumps(json.load(file), indent=4, ensure_ascii=False))
             file.close()
         except:
             raise ValueError("[ERROR]\nCannot 'Show', something went wrong")
@@ -98,7 +98,7 @@ class editYoutubers:
         try:
             # Save changed database to temporary file
             file = open(self.__path + ".tmp", 'w')
-            json.dump(self.__source, file, indent=4)
+            json.dump(self.__source, file, indent=4, ensure_ascii=False)
             file.close()
 
             # Now we are safely swaping these files and removing source
@@ -188,10 +188,13 @@ if __name__ == '__main__':
         try:
             Obj.AddYouTuber(args.add, by, args.date)
         except Exception as e:
-            print(e)
+            print("[ERROR] = %s" % e)
     elif args.remove != None:
         Obj = editYoutubers()
         print("Removing %s" % args.remove)
-        Obj.RemoveYoutuber(args.remove)
+        try:
+            Obj.RemoveYoutuber(args.remove)
+        except Exception as e:
+            print("[ERROR] = %s" % e)
     else:
         print("Maybe use some --help? Nothing happened")

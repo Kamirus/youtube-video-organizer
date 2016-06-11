@@ -14,77 +14,93 @@ from editYoutubers import getFullPathOfScript
 
 '''
 
-
+# Main 'abstract' class
 class Vids:
     # Variables
-    #     self.__folderPath - path to folder where we will be storing files with video info
-    #     self.__youtubersPath - path to json dict with youtubers
-    #     self.__youtubers - loaded json youtubers
+    #     self._folderPath - path to folder where we will be storing files with video info
+    #     self._youtubersPath - path to json dict with youtubers
+    #     self._youtubers - loaded json youtubers
 
     def __init__(self, folderPath="raw/youtubers/", youtubersPath="raw/youtubers.txt"):
-        self.__folderPath = getFullPathOfScript()+folderPath
-        self.__youtubersPath = getFullPathOfScript()+youtubersPath
-        self.__loadYoutubersFile()
+        self._folderPath = getFullPathOfScript()+folderPath
+        self._youtubersPath = getFullPathOfScript()+youtubersPath
+        self._loadYoutubersFile()
 
-    def updateAllYoutubers(self, Quick=False, All=False):
-        for id, _ in self.__youtubers.items():
-            self.updateYoutuber(id,Quick,All)
-
-    def updateYoutuber(self, id, Quick=False, All=False):
+    # Returns read json
+    def _loadJson(self, fileName):
         try:
-            oneYoutuber = self.__youtubers[id]
+            file = open(self._folderPath+fileName, 'r')
+            ret = json.load(file)
+            file.close()
+            return ret
+        except:
+            raise ValueError("[ERROR]\nProblem occured while loading...")
+
+    # Fills _youtubers
+    def _loadYoutubersFile(self):
+        # Fill youtubers with json file
+        try:
+            file = open(self._youtubersPath, 'r')
+            self._youtubers = json.load(file)
+            file.close()
+        except:
+            raise ValueError("[ERROR]\ncannot load file with youtubers")
+
+
+# Inits and Updates videos
+class UpdateVids(Vids):
+    def __init__(self):
+        super().__init__()
+
+    def updateAllYoutubers(self, All=False):
+        for id, _ in self._youtubers.items():
+            self.updateYoutuber(id,All)
+
+    def updateYoutuber(self, id, All=False):
+        try:
+            oneYoutuber = self._youtubers[id]
         except:
             raise ValueError("[ERROR]\nNot found ID in youtubers file!")
 
         # First time!
-        if oneYoutuber['channelName'] not in os.listdir(self.__folderPath):
+        if oneYoutuber['channelName'] not in os.listdir(self._folderPath):
             print("Init file for %s" % oneYoutuber['channelName'])
 
             # search vids
-            JJ = self.__callSearch(oneYoutuber,id)
+            JJ = self._callSearch(oneYoutuber,id)
 
             # save to file
-            self.__initFile(JJ,oneYoutuber['channelName'])
+            self._initFile(JJ,oneYoutuber['channelName'])
 
         # Just update
         else:
             try:
                 # load old list of videos
-                vids = self.__loadJson( oneYoutuber['channelName'] )
+                vids = self._loadJson( oneYoutuber['channelName'] )
 
                 # Want to make whole refresh
                 if All:
                     date = oneYoutuber['publishedAfter']
                 else:
-                    date = self.__incrementFullDate(vids[0]['date'])
+                    date = self._incrementFullDate(vids[0]['date'])
 
                 # search
-                JJ = self.__callSearch(oneYoutuber,id,date)
+                JJ = self._callSearch(oneYoutuber,id,date)
 
                 # merging into vids
-                if Quick:
-                    for toAdd in JJ:
-                        print('qNEW: {} by {:<}'.format(toAdd['title'],oneYoutuber['channelName']))
-                        self.__quickMergeAssistant(toAdd,vids,0)
-                else:
-                    JJ.reverse()
-                    for toAdd in JJ:
-                        print('NEW: {} by {:<}'.format(toAdd['title'],oneYoutuber['channelName']))
-                        self.__preciseMergeAssistant(toAdd,vids)
 
-                self.__saveFile(vids,oneYoutuber['channelName'])
+                JJ.reverse()
+                for toAdd in JJ:
+                    print('NEW: {} by {:<}'.format(toAdd['title'],oneYoutuber['channelName']))
+                    self._preciseMergeAssistant(toAdd,vids)
+
+                self._saveFile(vids,oneYoutuber['channelName'])
 
             except:
                 raise ValueError("[ERROR]\nProblem occured while loading...")
 
-    def removeVids(self, id):
-        if self.__youtubers[id]['channelName'] in os.listdir(self.__folderPath):
-            os.remove(self.__folderPath+self.__youtubers[id]['channelName'])
-            print("Removed %s" % self.__youtubers[id]['channelName'])
-        else:
-            print("Nothing to be removed")
-
-    def __callSearch(self,oneYoutuber,id, date=None):
+    # returns YTApi().youtube_search(id,date)
+    def _callSearch(self,oneYoutuber,id, date=None):
         # Maybe we dont want to update all vids but only check for new ones
         if date == None:
             date = oneYoutuber['publishedAfter']
@@ -95,78 +111,47 @@ class Vids:
         else:
             return yt.youtube_search(id,date)
 
-    # init file so it overwrites it
-    def __initFile(self,outputJson, fileName):
+    # init file with vids, so it overwrites it
+    def _initFile(self,outputJson, fileName):
         try:
-            file = open(self.__folderPath+ fileName, 'w')
+            file = open(self._folderPath+ fileName, 'w')
             json.dump(outputJson, file, indent=4,ensure_ascii=False)
             file.close()
         except:
             raise ValueError("[ERROR]\nProblem occured while saving...")
 
     # Safely overwrite file
-    def __saveFile(self, outputJson, fileName):
+    def _saveFile(self, outputJson, fileName):
         try:
             # Save changed database to temporary file
-            file = open(self.__folderPath+ fileName + ".tmp", 'w')
+            file = open(self._folderPath+ fileName + ".tmp", 'w')
             json.dump(outputJson, file, indent=4,ensure_ascii=False)
             file.close()
 
             # Now we are safely swaping these files and removing source
-            os.rename(self.__folderPath+fileName, self.__folderPath+fileName + ".remove")
-            os.rename(self.__folderPath+fileName + ".tmp", self.__folderPath+fileName)
-            os.remove(self.__folderPath+fileName + ".remove")
+            os.rename(self._folderPath+fileName, self._folderPath+fileName + ".remove")
+            os.rename(self._folderPath+fileName + ".tmp", self._folderPath+fileName)
+            os.remove(self._folderPath+fileName + ".remove")
         except:
             raise ValueError("[ERROR]\nProblem occured while saving...")
 
-    def __loadJson(self, fileName):
-        try:
-            file = open(self.__folderPath+fileName, 'r')
-            ret = json.load(file)
-            file.close()
-            return ret
-        except:
-            raise ValueError("[ERROR]\nProblem occured while loading...")
-
-    def __loadYoutubersFile(self):
-        # Fill youtubers with json file
-        try:
-            file = open(self.__youtubersPath, 'r')
-            self.__youtubers = json.load(file)
-            file.close()
-        except:
-            raise ValueError("[ERROR]\ncannot load file with youtubers")
-
     # merge two dictionaries
-    def __mergeDicts(self, new, old):
+    def _mergeDicts(self, new, old):
         for key,val in new.items():
             if key != 'tags':
                 old[key] = val
         return old
 
-    # Quick adding! We are merging results based on date, if the same
-    # video was republished then we will end up with same video twice
     # toAdd is just dict, vids is a list of dicts
-    def __quickMergeAssistant(self,toAdd,vids,i):
-        if toAdd['date'] > vids[i]['date']:
-            vids.append(toAdd)
-        elif toAdd['date'] == vids[i]['date']:
-            vids[i] = self.__mergeDicts(toAdd, vids[i])
-            i += 1
-        else: # strange case:
-            i = self.__quickMergeAssistant(toAdd,vids,i+1)
-        return i
-
-    # toAdd is just dict, vids is a list of dicts
-    def __preciseMergeAssistant(self,toAdd,vids):
+    def _preciseMergeAssistant(self,toAdd,vids):
         for k in range(len(vids)):
             if toAdd['link'] == vids[k]['link']:
-                self.__mergeDicts(toAdd,vids[k])
+                self._mergeDicts(toAdd,vids[k])
                 return
         vids.insert(0,toAdd)
 
     # date = 2016-05-27T18:00:09.000Z
-    def __incrementFullDate(self,date):
+    def _incrementFullDate(self,date):
         backup = date
         # date[0] = 2016-05-27 | date[1] = 18:00:09.000Z
         date = date.split('T')
@@ -175,7 +160,9 @@ class Vids:
         date[1] = date[1].split('.')[0].split(':')
 
         if date[1][2] == "59":
+            date[1][2] = "00"
             if date[1][1] == "59":
+                date[1][1] = "00"
                 if date[1][0] == "23":
                     # problem...
                     return backup
@@ -188,6 +175,20 @@ class Vids:
 
         return '%sT%s.000Z' % (date[0], ':'.join(date[1]))
 
+
+# Just for removing files with videos
+class RemoveVids(Vids):
+    def __init__(self):
+        super().__init__()
+
+    def removeVids(self, id):
+        if self._youtubers[id]['channelName'] in os.listdir(self._folderPath):
+            os.remove(self._folderPath+self._youtubers[id]['channelName'])
+            print("Removed %s" % self._youtubers[id]['channelName'])
+        else:
+            print("Nothing to be removed")
+
+
 # Extend View from youtubers
 class VidsView(View):
     class exList(list):
@@ -197,7 +198,6 @@ class VidsView(View):
         def __str__(self):
             tmp = super().__str__()
             return ','.join(  tmp[2:-2].split("', '")  )
-
 
     def __init__(self, OrderList, Youtubers, Tags=None, folderPath="raw/youtubers/"):
         super().__init__(OrderList)
@@ -321,6 +321,7 @@ class VidsView(View):
         return True, tmp
 
 
+# Handles yt api queries
 class YTApi:
     # important Constants
     DEVELOPER_KEY = "AIzaSyCYa3J7eFc1tK5HUZDuUWV9_tY58dU3CSY"
@@ -336,7 +337,7 @@ class YTApi:
           part="id"
         ).execute().get("items",[])[0]["id"]
 
-    # returns a dictionary of videos for given id
+    # returns a list of videos for given id
     def youtube_search(self,id, published_after, isUsername=False):
         youtube = build(self.YOUTUBE_API_SERVICE_NAME, self.YOUTUBE_API_VERSION,
             developerKey=self.DEVELOPER_KEY)
@@ -439,28 +440,39 @@ if __name__ == '__main__':
     parser.add_argument("-c", "--clear", help="Clear terminal before printing anything", action='store_true')
     parser.add_argument("-t", "--table", help="Show results in a table", action='store_true')
 
-    parser.add_argument("--test", action='store_true')
+    # parser.add_argument("--test", action='store_true')
 
     args = parser.parse_args()
 
+
     if args.clear: os.system("clear")
 
+    # if args.test:
+    #     print( getFullPathOfScript() )
+    #     quit(0)
 
-    if args.test:
-        print( getFullPathOfScript() )
-        quit(0)
-
-
+    # UPDATE
     if args.update != False:
-        tool = Vids()
+        tool = UpdateVids()
         print("Updating...")
         if args.update == None:
-            tool.updateAllYoutubers(All=args.all)
+            try:
+                tool.updateAllYoutubers(All=args.all)
+            except Exception as e:
+                print("[ERROR] = %s" % e)
         else:
-            tool.updateYoutuber(args.update,All=args.all)
+            try:
+                tool.updateYoutuber(args.update,All=args.all)
+            except Exception as e:
+                print("[ERROR] = %s" % e)
+    # REMOVE
     elif args.remove != None:
-        tool = Vids()
-        tool.removeVids(args.remove)
+        tool = RemoveVids()
+        try:
+            tool.removeVids(args.remove)
+        except Exception as e:
+                print("[ERROR] = %s" % e)
+    # SHOW
     elif args.show != None:
         Cols = ['title','duration','link']
 
@@ -476,5 +488,8 @@ if __name__ == '__main__':
             args.show = os.listdir(  tmp.getFolderPath()  )
 
         # Call .show with chosen youtubers
-        tool = VidsView(Cols,args.show,args.tags )
-        tool.show(0,lines=args.table,printMain=True)
+        try:
+            tool = VidsView(Cols,args.show,args.tags )
+            tool.show(0,lines=args.table,printMain=True)
+        except Exception as e:
+                print("[ERROR] = %s" % e)

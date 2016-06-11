@@ -130,4 +130,7 @@ if __name__ == '__main__':
     if args.clear: os.system("clear")
 
     view = View(['channelName', 'publishedAfter'],)
-    view.show(printMain=args.id,lines=args.table)
+    try:
+        view.show(printMain=args.id,lines=args.table)
+    except Exception as e:
+        print("[ERROR] = %s" % e)
