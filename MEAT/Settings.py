@@ -54,7 +54,7 @@ class Settings(OrderedDict):
         # here define what you want to have in settings file
         res = OrderedDict()
 
-        res['maxCharsForTitle'] = 45
+        res['maxCharsForTitle'] = None
         # res['tags'] = ['funny','music','vlog','gameplay','education']
         res['dontChangeValuesInThatListWhileUpdatingAll'] = ['show','seen','tags']
 

@@ -11,6 +11,7 @@ if __name__ == '__main__':
     parser.add_argument("Option",choices=['seen','addTags','removeTags','dontShow','unseen','show'])
     parser.add_argument("--tags",nargs='*')
     parser.add_argument("--clear", help="Clear terminal before printing anything", action='store_true')
+    parser.add_argument("--inRange", help="enter two ids, this option will apply to every id between(with first and last)", action='store_true')
     # parser.add_argument("--test", action='store_true')
 
     args = parser.parse_args()
@@ -19,6 +20,10 @@ if __name__ == '__main__':
         os.system('clear')
 
     edit = EditVids()
+
+    # generate range
+    if args.inRange:
+        args.Ids = list(range(int(args.Ids[0]),int(args.Ids[1])+1))
 
     op = args.Option
     if op == 'seen':

@@ -4,6 +4,8 @@ import argparse, json, os, datetime
 from Settings import getFullPathOfScript
 from YTApi import YTApi
 
+# i need that in order to delete files with videos after removing youtuber
+pathToYoutubersDir = getFullPathOfScript()+'raw/youtubers/'
 
 class EditYoutubers:
     __date = '1970-01-01'
@@ -61,6 +63,9 @@ class EditYoutubers:
             self.__loadFile()
 
         try:
+            # need to delete his file with videos
+            os.remove(pathToYoutubersDir+self.__source[id]['channelName'])
+
             del (self.__source[id])
         except:
             raise ValueError("Nothing to be removed")

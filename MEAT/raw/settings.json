@@ -1,5 +1,5 @@
 {
-    "maxCharsForTitle": 45,
+    "maxCharsForTitle": null,
     "dontChangeValuesInThatListWhileUpdatingAll": [
         "show",
         "seen",

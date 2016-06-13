@@ -100,8 +100,13 @@ class YTApi:
 
         # Add each result to the list
         for video_result in video_response.get("items", []):
+            # title
+            title = video_result["snippet"]["title"]
+            if self.settings['maxCharsForTitle'] != None:
+                title = title[:self.settings['maxCharsForTitle']]
+
             vids.append({
-                'title': video_result["snippet"]["title"][:self.settings['maxCharsForTitle']],
+                'title': title,
                 'duration': self.reformatISODate(video_result['contentDetails']['duration']),
                 # 'duration': video_result['contentDetails']['duration'],
                 'link': 'www.youtube.com/watch?v=' + video_result["id"],
