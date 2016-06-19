@@ -1,0 +1,60 @@
+|===================|
+|Słowo o wymaganiach|
+|===================|
+python 3.X
+tworzone na linuxa, testowane na Ubuntu 14.04 / 15.10
+
+prawdopodobnie będzie potrzebna to:
+$ pip install --upgrade google-api-python-client
+
+|===========|
+|Spis plików|
+|===========|
+Źródła :
+	editYoutubers.py
+	Settings.py
+	Vids.py
+	View.py
+	YTApi.py
+Użytkowe : 
+	youtubers
+	vids
+	editVids
+
+|=============|
+|Słownik pojęć|
+|=============|
+autor = youtuber = właściciel kanału w serwisie YouTube
+username = nazwa autora w serwisie YouTube
+channelId = identyfikator kanału autora w serwisie YouTube
+id = username albo channelId, jedno z tych dwóch
+channelName = to jest nazwa kanału autora w serwisie YouTube
+
+|=========================|
+|Jak używać? Co potrzebne?|
+|=========================|
+	1. Wrzucić pliki do jednego folderu
+	2. (Opcjonalnie) dodać pliki użytkowe do PATH
+	3. Dodać pierwszego autora:
+		WAŻNE: każdego autora identyfikujemy przez jego nazwę użytkownika w serwisie YouTube lub przez identyfikator jego kanału. By zdobyć id albo username wchodzimy na kanał autora. Patrzymy na link: www.youtube.com/user/TO_JEST_USERNAME
+		albo : www.youtube.com/channel/TU_JEST_DŁUGI_ID_KANAŁU
+
+		* mając już username albo channelId korzystamy z pliku 'youtubers' by dodać autora
+		* jak używać? komenda: '$ youtubers --help'
+		* przykład dodania autora: '$ youtubers add Computerphile U 2016-04-29' tą komendą dodajemy autora, którego username='Computerphile', dlatego wpisujemy 'U', dodatkowo podaliśmy datę, czyli będziemy pobierać informacje o filmach, które zostały dodane po tej dacie
+	4. Pobrać informacje o filamch:
+		* służy do tego 'vids'
+		* '$ vids --help' da więcej informacji
+		* aby pobrac najnowsze informacje o wszystkich, piszemy '$ vids -u'
+	5. Wyświetlić informacje o filmach:
+		* aby wyświetlić wszystkie filmy: '$ vids -s'
+		* aby wyświetlić filmy konkretnych osób '$ vids -s Id_nr1 Id_nr2 ... Id_nrN'
+		* więcej informacji np. o wyświetlaniu otagowanych filmów '$ vids --help'
+	6. Zaznajomić się z 'editVids':
+		* '$ editVids --help'
+		* Możemy za pomocą tego oznaczyć filmy danego autora jako obejrzane ('seen'), dodać tagi do filmów, usunąć tagi, anulować znacznik obejrzenia, sprawić, że dane filmy nie będa wyświetlane, itd.
+		* Przykład oznaczenia filmów użytkownika jako obejrzane: '$ editVids USERNAME_ALBO_CHANNELNAME 1 4 5 6 7 seen'
+		* Możemy oznaczać filmy w zakresie przez podanie dwóch identyfikatorów filmów i opcje --inRange
+		przykład: 'editVids Computerphile 1 10 dontShow --inRange' co oznaczy filmy o id 1,2..10 by nie były pokazywane
+		* Dodanie tagów realizujemy następująco:
+		'$ editVids Computerphile 0 1 2 3 addTags --tags ciekawe wazne'

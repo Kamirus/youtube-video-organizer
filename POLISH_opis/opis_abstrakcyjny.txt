@@ -1,0 +1,64 @@
+|=========================================|
+|Podział na moduły, a wewnątrz nich klasy:|
+|=========================================|
+* Videos: 
+	1. Vids
+	2. UpdateVids extends Vids
+	3. RemoveVids extends Vids
+	4. EditVids extends Vids
+* View:
+	1. View
+	2. VidsView extends View
+* YouTubeAPI:
+	1. YTApi
+* editYoutubers:
+	1. EditYoutubers
+* Settings:
+	1. Settings extends 'struktura danych typu: Słownik'
+
+
+|====|
+|OPIS|
+|====|
+
+Ogólnie o projekcie: zbór małych programów używanych w terminalu, które służą do zarządzania filmami 'do obejrzenia' w serwisie YouTube.
+
+Główne funkcje to: dodanie autora, którego filmy nas interesują, razem z datą, od której informacje o filmach będą pobierane; pobranie najnowszych informacji o filmach; otagowanie filmów; oznaczenie tych już obejrzanych oraz tych, których nie chcemy oglądać
+
+Te zadania są realizowane przez programy konsolowe, z których korzystamy przez argumenty wywołania programu.
+
+|======================|
+|Troche o każdej klasie|
+|======================|
+* Vids:
+	klasa zawierająca potrzebne narzędzia dla swoich dzieci-klas: metody #protected:  załadowania pliku json, bezpiecznego nadpisania pliku obiektem json, wczytanie bazy autorów
+INNE ZASTOSOWANIA: można wykorzystać przy innych projektach, które wykorzystują json'a - czytają, zmieniają oraz nadpisują plik (bezpiecznie!)
+
+* UpdateVids extends Vids:
+	ta klasa służy do pobierania najnowszych informacji o filmach, ale również do ponownego pobrania wszystkich (nie tylko najnowszych) informacji, jednakże zachowując wybrane pola (tj. lista tagów, czy znacznik 'seen' oraz 'show', które determinują czy film został już obejrzany, oraz czy film ma być wyświetlany)
+	UpdateVids korzysta przy tym z klasy YTApi do szukania informacji
+
+* RemoveVids extends Vids:
+	po prostu usuwa plik z filmami danego autora
+
+* EditVids extends Vids:
+	klasa ta zawiera jedną ważną metodę prywatną 'edit', którą z różnymi parametrami wywołuję w głównych metodach publicznych, które mają za zadanie: oznaczyć wybrane filmy danego twórcy jako obejrzane, albo nieobejrzane, dodać tagi wprowadzone przed użytkownika oraz je usunąć, także można sprawić by dane filmy nie były wyświetlane
+
+* View:
+	klasa umożliwiająca wyświetlanie spisu twórców, ma różne kosmetyczne metody, które pozwalają ładnie wypisać te dane na ekran
+INNE ZASTOSOWANIA: klasa jest tak zaimplementowana, że może być wykorzystana do dowolnego json'a typu: słownik, którego elementy są słownikami zawierającymi już tylko typy proste - do wyświetenia. Klasa wyświetla tabelkę z wartościami, które znajdują się pod podanymi do konstruktora kluczami (wyświetla te klucze, które podamy)
+
+* VidsView extends View:
+	rozszerza możliwości rodzica, służy do wyświetlania filmów, każda tabelka z filmami jest poprzedzona nazwą autora, wyświetla tylko podane dane w konstruktorze
+INNE ZASTOSOWANIA: Podobnie jak rodzic, tylko teraz możemy wypisywać kilka plików jednym wywołaniem i każda tabelka z wartościami jest poprzedzona nazwą pliku, dodatkowo klasa ta ma zaimplementowaną rozszerzoną wersję listy, dzięki temu możemy wyświetlać listę słowników, a nie słownik słowników
+
+* YTApi:
+	klasa ta zawiera metody, które wykorzystują api google'a by wyciągać informacje o filmach, jak i autorach. Głównym zadaniem jest pobranie listy informacji o filmach
+
+* EditYoutubers:
+	obsługuje wprowadzanie zmian do pliku z autorami, tj. dodawanie, usuwanie autora. Posiada też mechanizm walidacji daty - czy użytkownik wprowadził datę w dobrym formacie 
+
+* Settings extends 'struktura danych typu: Słownik':
+	głównym zadaniem tej klasy, jest obsługa wyodrębnionych opcji poza kod, które znajdują się w pliku 'settings'. Przy tworzeniu instancji tej klasy zostaje utworzony plik w domyślnej lokalizacji, jeśli plik nie istnieje. W przypadku, gdy plik istnieje następuje sprawdzanie, czy wszystkie potrzebne opcje są zawarte w pliku (zachowuje zmiany użytkownika, dodaje opcje, których w ogóle w pliku nie ma)
+
+Autor: Kamil Listopad
