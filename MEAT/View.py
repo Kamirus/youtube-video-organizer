@@ -1,10 +1,14 @@
 import os,json
-from Settings import getFullPathOfScript
+from Settings import getFullPathOfScript,Settings
 
 class View:
     # OrderList is a list with Keys that will be displayed
-    def __init__(self, OrderList, path="raw/youtubers.txt"):
-        self._path = getFullPathOfScript()+path
+    def __init__(self, OrderList):
+        self._settings = Settings()
+        # path to youtubers.txt
+        self._path = '{}{}{}'.format(getFullPathOfScript(),
+                                      self._settings['paths']['rawFolder'],
+                                      'youtubers.txt')
         self._source = None
         self._keylist = OrderList
 
@@ -36,8 +40,8 @@ class View:
             file = open(filePath, 'r')
             self._source = json.load(file)
             file.close()
-        except:
-            raise ValueError("[ERROR]\ncannot load file")
+        except Exception as e:
+            raise ValueError("[ERROR]\ncannot load file\n%s" % e)
 
     def _heading(self, space, printMain, char='='):
         # Line
@@ -123,11 +127,13 @@ class VidsView(View):
             tmp = super().__str__()
             return ','.join(  tmp[2:-2].split("', '")  )
 
-    def __init__(self, OrderList, Youtubers, Tags=None, folderPath="raw/youtubers/"):
+    def __init__(self, OrderList, Youtubers, Tags=None):
         super().__init__(OrderList)
         self._youtubers = Youtubers # id's of youtubers
         self._tags = Tags
-        self._folderPath = getFullPathOfScript()+folderPath
+        # path to youtubers folder
+        self._folderPath = '{}{}'.format(getFullPathOfScript(),
+                                         self._settings['paths']['youtubersFolder'])
 
     # path is here for youtubers.txt not videos
     def show(self, nest=0, lines=False, printMain=False,
@@ -246,3 +252,5 @@ class VidsView(View):
 
         # nothing!
         return True, tmp
+
+

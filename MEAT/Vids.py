@@ -11,9 +11,13 @@ class Vids:
     #     self._youtubersPath - path to json dict with youtubers
     #     self._youtubers - loaded json youtubers
 
-    def __init__(self, folderPath="raw/youtubers/", youtubersPath="raw/youtubers.txt"):
-        self._folderPath = getFullPathOfScript() + folderPath
-        self._youtubersPath = getFullPathOfScript() + youtubersPath
+    def __init__(self):
+        self._ss = Settings()
+        self._folderPath = '{}{}'.format(getFullPathOfScript(),
+                                         self._ss['paths']['youtubersFolder'])
+        self._youtubersPath = '{}{}{}'.format(getFullPathOfScript(),
+                                            self._ss['paths']['rawFolder'],
+                                              'youtubers.txt')
         self._loadYoutubersFile()
 
     # Returns read json
@@ -23,8 +27,8 @@ class Vids:
             ret = json.load(file)
             file.close()
             return ret
-        except:
-            raise ValueError("[ERROR]\nProblem occured while loading...")
+        except Exception as e:
+            raise ValueError("[ERROR]\nProblem occured while loading...\n%s" % e)
 
     # Safely overwrite file
     def _saveFile(self, outputJson, fileName):
@@ -38,8 +42,8 @@ class Vids:
             os.rename(self._folderPath + fileName, self._folderPath + fileName + ".remove")
             os.rename(self._folderPath + fileName + ".tmp", self._folderPath + fileName)
             os.remove(self._folderPath + fileName + ".remove")
-        except:
-            raise ValueError("[ERROR]\nProblem occured while saving...")
+        except Exception as e:
+            raise ValueError("[ERROR]\nProblem occured while saving...\n%s" % e)
 
     # Fills _youtubers
     def _loadYoutubersFile(self):
@@ -48,16 +52,12 @@ class Vids:
             file = open(self._youtubersPath, 'r')
             self._youtubers = json.load(file)
             file.close()
-        except:
-            raise ValueError("[ERROR]\ncannot load file with youtubers")
+        except Exception as e:
+            raise ValueError("[ERROR]\ncannot load file with youtubers\n%s" % e)
 
 
 # Inits and Updates videos
 class UpdateVids(Vids):
-    def __init__(self):
-        super().__init__()
-        self._ss = Settings()
-
     def updateAllYoutubers(self, All=False):
         for id, _ in self._youtubers.items():
             self.updateYoutuber(id, All)
@@ -65,8 +65,14 @@ class UpdateVids(Vids):
     def updateYoutuber(self, id, All=False):
         try:
             oneYoutuber = self._youtubers[id]
+        except Exception as e:
+            raise ValueError("[ERROR]\nNot found ID in youtubers file!\n%s" % e)
+
+        # check if folder exists
+        try:
+            os.listdir(self._folderPath)
         except:
-            raise ValueError("[ERROR]\nNot found ID in youtubers file!")
+            os.mkdir(self._folderPath)
 
         # First time!
         if oneYoutuber['channelName'] not in os.listdir(self._folderPath):
@@ -102,8 +108,8 @@ class UpdateVids(Vids):
 
                 self._saveFile(vids, oneYoutuber['channelName'])
 
-            except:
-                raise ValueError("[ERROR]\nProblem occured while loading...")
+            except Exception as e:
+                raise ValueError("[ERROR]\nProblem occured while loading...\n%s" % e)
 
     # returns YTApi().youtube_search(id,date)
     def _callSearch(self, oneYoutuber, id, date=None):
@@ -123,8 +129,8 @@ class UpdateVids(Vids):
             file = open(self._folderPath + fileName, 'w')
             json.dump(outputJson, file, indent=4, ensure_ascii=False)
             file.close()
-        except:
-            raise ValueError("[ERROR]\nProblem occured while saving...")
+        except Exception as e:
+            raise ValueError("[ERROR]\nProblem occured while saving...\n%s" % e)
 
     # merge two dictionaries
     def _mergeDicts(self, new, old):

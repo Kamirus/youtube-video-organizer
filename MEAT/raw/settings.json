@@ -1,8 +1,12 @@
 {
-    "maxCharsForTitle": null,
     "dontChangeValuesInThatListWhileUpdatingAll": [
         "show",
         "seen",
         "tags"
-    ]
+    ],
+    "maxCharsForTitle": null,
+    "paths": {
+        "rawFolder": "raw/",
+        "youtubersFolder": "raw/youtubers/"
+    }
 }

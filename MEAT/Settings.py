@@ -19,8 +19,8 @@ class Settings(OrderedDict):
         super().__init__(*args, **kwds)
         self._folderPath = getFullPathOfScript()+folderPath
         self._path = '{}{}'.format(self._folderPath,SETTINGS_FILE_NAME)
-        if SETTINGS_FILE_NAME not in os.listdir(self._folderPath):
-            self._init()
+        # check if already initialized then create file if needed
+        self._init()
         self.load()
 
     def load(self):
@@ -28,9 +28,14 @@ class Settings(OrderedDict):
             file = open(self._path, 'r')
             self.clear()
             self.update(json.load(file))
+
+            # merge with missing options from default
+            self.merge(self.getDefault())
+            self._overwriteWith(self)
+
             file.close()
-        except:
-            raise ValueError("[ERROR]\ncannot load settings file")
+        except Exception as e:
+            raise ValueError("[ERROR]\ncannot load settings file\n%s" % e)
 
     def save(self):
         try:
@@ -55,17 +60,26 @@ class Settings(OrderedDict):
         res = OrderedDict()
 
         res['maxCharsForTitle'] = None
-        # res['tags'] = ['funny','music','vlog','gameplay','education']
         res['dontChangeValuesInThatListWhileUpdatingAll'] = ['show','seen','tags']
+        res['paths'] = {
+            'rawFolder' : 'raw/',
+            'youtubersFolder' : 'raw/youtubers/'
+        }
 
         return res
 
     def _init(self):
         try:
+            if SETTINGS_FILE_NAME in os.listdir(self._folderPath):
+                return
+        except FileNotFoundError:
+            os.mkdir(self._folderPath)
+
+        try:
+            print('Overwritting settings file')
             self._overwriteWith(self.getDefault())
         except ValueError as e:
             print("While initializing error occurred",e,sep='\n')
-
 
     def _overwriteWith(self, Dict:OrderedDict):
         try:
@@ -77,4 +91,4 @@ class Settings(OrderedDict):
             file.close()
         except Exception as e:
             print(e)
-            raise ValueError("Something went wrong while overwritting settings file ({})".format(self._path))
+            raise ValueError("[ERROR] Something went wrong while overwritting settings file ({})\n{}".format(self._path,e))

@@ -1,0 +1,85 @@
+#!/usr/bin/env python3
+import argparse,os
+from editYoutubers import EditYoutubers
+from View import View
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("Task",choices=['add','show','remove'], help="pick one, what You want to do?")
+    parser.add_argument("Args",nargs='*',help="'add' : add ID U/C [DATE], "
+                                              "where ID is channelId, or username; "
+                                              "U/C stands for Username/ChannelId, enter U or C depending on type of ID"
+                                              "optional DATE in format YYYY-MM-DD this is 'publishedAfter' date "
+                                              "|#| "
+                                              "info for 'show' : show [id], type: 'show id' to see every youtuber with their id "
+                                              "|#| "
+                                              "info for 'remove' : remove ID, where ID is username or channel id "
+                                              )
+    parser.add_argument("-c","--clear",help='Clears terminal before printing anything more',action='store_true')
+
+
+    args = parser.parse_args()
+
+    if args.clear:
+        os.system("clear")
+
+    # ADD
+    if args.Task == 'add':
+        try:
+            # ID
+            Id = args.Args[0]
+            try:
+                # TYPE -> U/C
+                if args.Args[1].lower() == 'u':
+                    by = "username"
+                elif args.Args[1].lower() == 'c':
+                    by = "channelId"
+                else:
+                    raise ValueError('Wrong type of entered ID, please enter "U" if ID is username, or "C" for channel id')
+                # DATE
+                try:
+                    date = args.Args[2]
+                except:
+                    date = "1970-01-01"
+                # Print message
+                print("Adding {} by {}, published after:{}".format(Id, by, date))
+                Obj = EditYoutubers()
+                try: # main method for 'add'
+                    Obj.AddYouTuber(Id,by,date)
+                except Exception as e:
+                    print("[ERROR] : %s" % e)
+            except ValueError as e:
+                print(e)
+            except:
+                print("Please enter type of this ID, U for username or C for channel id")
+        except:
+            print('Please enter ID of desired youtuber, which is username or channel id')
+    # SHOW
+    elif args.Task == 'show':
+        try:
+            if args.Args[0].lower() == 'id':
+                Id = True
+            else:
+                print("Not recognised argument after show, printing default")
+                Id = False
+        except:
+            Id = False
+
+        view = View(['channelName', 'publishedAfter'])
+        try:
+            view.show(printMain=Id)
+        except Exception as e:
+            print("[ERROR] : %s" % e)
+    # REMOVE
+    elif args.Task == 'remove':
+        try:
+            Id = args.Args[0]
+            Obj = EditYoutubers()
+            print("Removing %s" % Id)
+            try:
+                Obj.RemoveYoutuber(Id)
+            except Exception as e:
+                print("[ERROR] : %s" % e)
+        except:
+            print("Please type ID of youtuber you want to remove")
+

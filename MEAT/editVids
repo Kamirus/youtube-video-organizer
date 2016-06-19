@@ -6,7 +6,7 @@ from Vids import EditVids
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("Youtuber", help="First enter id or channelName of youtuber whose vids You want to edit")
+    parser.add_argument("Youtuber", help="First enter id or channelName of youtuber whose vids You want to editVids")
     parser.add_argument("Ids", help="Enter id's of videos", type=int, nargs='*',default=[])
     parser.add_argument("Option",choices=['seen','addTags','removeTags','dontShow','unseen','show'])
     parser.add_argument("--tags",nargs='*')
