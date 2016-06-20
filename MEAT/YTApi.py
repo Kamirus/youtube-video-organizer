@@ -6,6 +6,7 @@ from Settings import Settings
 class YTApi:
     # important Constants
     settings = Settings()
+    # Unique api key from settings
     OWN_DEV_KEY = settings['apiKey']
     YOUTUBE_API_SERVICE_NAME = "youtube"
     YOUTUBE_API_VERSION = "v3"
