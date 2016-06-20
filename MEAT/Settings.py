@@ -65,6 +65,7 @@ class Settings(OrderedDict):
             'rawFolder' : 'raw/',
             'youtubersFolder' : 'raw/youtubers/'
         }
+        res['apiKey'] = None
 
         return res
 

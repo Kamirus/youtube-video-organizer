@@ -5,14 +5,14 @@ from Settings import Settings
 # Handles yt api queries
 class YTApi:
     # important Constants
-    DEVELOPER_KEY = "AIzaSyCYa3J7eFc1tK5HUZDuUWV9_tY58dU3CSY"
+    settings = Settings()
+    OWN_DEV_KEY = settings['apiKey']
     YOUTUBE_API_SERVICE_NAME = "youtube"
     YOUTUBE_API_VERSION = "v3"
-    settings = Settings()
 
     def GetChannelIdByUsername(self, Username):
         youtube = build(self.YOUTUBE_API_SERVICE_NAME, self.YOUTUBE_API_VERSION,
-                        developerKey=self.DEVELOPER_KEY)
+                        developerKey=self.OWN_DEV_KEY)
 
         return youtube.channels().list(
             forUsername=Username,
@@ -22,7 +22,7 @@ class YTApi:
     # returns a list of videos for given id
     def youtube_search(self, id, published_after, isUsername=False):
         youtube = build(self.YOUTUBE_API_SERVICE_NAME, self.YOUTUBE_API_VERSION,
-                        developerKey=self.DEVELOPER_KEY)
+                        developerKey=self.OWN_DEV_KEY)
 
         # Call the search.list method to retrieve results matching the specified
         # query term.
