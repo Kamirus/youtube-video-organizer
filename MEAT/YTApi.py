@@ -4,27 +4,25 @@ from Settings import Settings
 
 # Handles yt api queries
 class YTApi:
-    # important Constants
-    settings = Settings()
-    # Unique api key from settings
-    OWN_DEV_KEY = settings['apiKey']
-    YOUTUBE_API_SERVICE_NAME = "youtube"
-    YOUTUBE_API_VERSION = "v3"
+    def __init__(self):
+        # important Constants
+        self.settings = Settings()
+        # Unique api key from settings
+        self.OWN_DEV_KEY = self.settings['apiKey']
+        self.YOUTUBE_API_SERVICE_NAME = "youtube"
+        self.YOUTUBE_API_VERSION = "v3"
+        # build
+        self.youtube = build(self.YOUTUBE_API_SERVICE_NAME, self.YOUTUBE_API_VERSION,
+                            developerKey=self.OWN_DEV_KEY)
 
     def GetChannelIdByUsername(self, Username):
-        youtube = build(self.YOUTUBE_API_SERVICE_NAME, self.YOUTUBE_API_VERSION,
-                        developerKey=self.OWN_DEV_KEY)
-
-        return youtube.channels().list(
+        return self.youtube.channels().list(
             forUsername=Username,
             part="id"
         ).execute().get("items", [])[0]["id"]
 
     # returns a list of videos for given id
     def youtube_search(self, id, published_after, isUsername=False):
-        youtube = build(self.YOUTUBE_API_SERVICE_NAME, self.YOUTUBE_API_VERSION,
-                        developerKey=self.OWN_DEV_KEY)
-
         # Call the search.list method to retrieve results matching the specified
         # query term.
 
@@ -33,7 +31,7 @@ class YTApi:
 
         vids = []
 
-        vids = self.__onePageYoutubeSearch(vids, youtube, id, published_after)
+        vids = self.__onePageYoutubeSearch(vids, self.youtube, id, published_after)
 
         return vids
 
@@ -41,12 +39,14 @@ class YTApi:
     # Tuple = (uOrC, userOrChannelID)
     @staticmethod
     def getChannelName(Tuple):
-        DEVELOPER_KEY = "AIzaSyCYa3J7eFc1tK5HUZDuUWV9_tY58dU3CSY"
+
+        # Unique api key from settings
+        OWN_DEV_KEY = Settings()['apiKey']
         YOUTUBE_API_SERVICE_NAME = "youtube"
         YOUTUBE_API_VERSION = "v3"
-
+        # build
         youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
-                        developerKey=DEVELOPER_KEY)
+                            developerKey=OWN_DEV_KEY)
 
         (uOrID, userOrChannelID) = Tuple
         if uOrID.casefold() == 'u':

@@ -2,10 +2,11 @@
 import argparse,os
 from editYoutubers import EditYoutubers
 from View import View
+from Settings import Settings
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("Task",choices=['add','show','remove'], help="pick one, what You want to do?")
+    parser.add_argument("Task",choices=['add','show','remove','init'], help="pick one, what You want to do?")
     parser.add_argument("Args",nargs='*',help="'add' : add ID U/C [DATE], "
                                               "where ID is channelId, or username; "
                                               "U/C stands for Username/ChannelId, enter U or C depending on type of ID"
@@ -14,6 +15,8 @@ if __name__ == '__main__':
                                               "info for 'show' : show [id], type: 'show id' to see every youtuber with their id "
                                               "|#| "
                                               "info for 'remove' : remove ID, where ID is username or channel id "
+                                              "|#|"
+                                              "info for 'init': it will init 'raw' folder with 'settings.json'"
                                               )
     parser.add_argument("-c","--clear",help='Clears terminal before printing anything more',action='store_true')
 
@@ -82,4 +85,5 @@ if __name__ == '__main__':
                 print("[ERROR] : %s" % e)
         except:
             print("Please type ID of youtuber you want to remove")
-
+    elif args.Task == 'init':
+        Settings()

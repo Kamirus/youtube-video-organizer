@@ -24,6 +24,7 @@ Użytkowe :
 	vids
 	editVids
 
+
 |=============|
 |Słownik pojęć|
 |=============|
@@ -33,13 +34,14 @@ channelId = identyfikator kanału autora w serwisie YouTube
 id = username albo channelId, jedno z tych dwóch
 channelName = to jest nazwa kanału autora w serwisie YouTube
 
+
 |=========================|
 |Jak używać? Co potrzebne?|
 |=========================|
 	1. Wrzucić pliki do jednego folderu
 	2. (Opcjonalnie) dodać pliki użytkowe do PATH
-	3. Ustawić swój własny API key w pliku 'settings.json', by plik ten wygenerował się wystarczy wywołać komendę '$ youtubers --help'
-	Następnie przechodzimy do katalogu 'raw' gdzie otwieramy 'settings.json' i tam miast wartości 'null' wpisujemy "TWOJ_API_"
+	3. Ustawić swój własny API key w pliku 'settings.json', by plik ten wygenerował się wystarczy wywołać komendę '$ youtubers init'
+	Następnie przechodzimy do katalogu 'raw' gdzie otwieramy 'settings.json' i tam miast wartości 'null' wpisujemy razem z cudzysłowem "TWOJ_API_"
 	4. Dodać pierwszego autora:
 		WAŻNE: każdego autora identyfikujemy przez jego nazwę użytkownika w serwisie YouTube lub przez identyfikator jego kanału. By zdobyć id albo username wchodzimy na kanał autora. Patrzymy na link: www.youtube.com/user/TO_JEST_USERNAME
 		albo : www.youtube.com/channel/TU_JEST_DŁUGI_ID_KANAŁU
@@ -63,3 +65,5 @@ channelName = to jest nazwa kanału autora w serwisie YouTube
 		przykład: 'editVids Computerphile 1 10 dontShow --inRange' co oznaczy filmy o id 1,2..10 by nie były pokazywane
 		* Dodanie tagów realizujemy następująco:
 		'$ editVids Computerphile 0 1 2 3 addTags --tags ciekawe wazne'
+
+Autor: Kamil Listopad
