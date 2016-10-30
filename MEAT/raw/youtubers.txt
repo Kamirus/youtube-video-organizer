@@ -1,0 +1,27 @@
+{
+    "jezykalnia": {
+        "idType": "username",
+        "channelName": "Arlena Witt",
+        "publishedAfter": "1970-01-01T00:00:00Z"
+    },
+    "UCDBofwsppusJeitUyKpkB5g": {
+        "idType": "channelId",
+        "channelName": "SMITEPro",
+        "publishedAfter": "2016-05-01T00:00:00Z"
+    },
+    "wybuchajacebeczki": {
+        "idType": "username",
+        "channelName": "Krzysztof Gonciarz",
+        "publishedAfter": "2016-05-01T00:00:00Z"
+    },
+    "dmbrandon": {
+        "idType": "username",
+        "channelName": "dmbrandon!",
+        "publishedAfter": "2016-06-01T00:00:00Z"
+    },
+    "UCveZqqGewoyPiacooywP5Ig": {
+        "idType": "channelId",
+        "channelName": "Alt Shift X",
+        "publishedAfter": "2016-04-25T00:00:00Z"
+    }
+}

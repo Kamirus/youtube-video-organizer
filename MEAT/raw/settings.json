@@ -1,0 +1,13 @@
+{
+    "maxCharsForTitle": null,
+    "apiKey": "AIzaSyBkF1Yxn6__FfEXslIOXhcLviCTs80Sgvg",
+    "dontChangeValuesInThatListWhileUpdatingAll": [
+        "show",
+        "seen",
+        "tags"
+    ],
+    "paths": {
+        "rawFolder": "raw/",
+        "youtubersFolder": "raw/youtubers/"
+    }
+}
