@@ -1,3 +1,5 @@
 # YouTube video organizer
 
-More info in 'POLISH_opis/opis_konkretny.txt'
+This is my final project for Object-oriented Programming course.
+
+Description only in Polish: You can find more in 'POLISH_opis/opis_konkretny.txt'
